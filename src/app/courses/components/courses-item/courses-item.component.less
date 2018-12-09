@@ -2,12 +2,22 @@
 .wrapper{
   display: flex;
   justify-content: space-between;
-  border: 1px solid @border-color;
-  margin: 2*@margin;
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(166, 179, 183, 0.5);
+  background: rgba(166, 179, 183, 0.1);
+  margin: 3*@margin 0;
+}
+.main{
+  margin: @margin 3*@margin;
 }
 .buttons{
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  margin: 2*@margin;
+  >*{
+    padding: @margin;
+  }
 }
 .header{
   font-weight: bold;
@@ -16,4 +26,7 @@
   >p{
     margin-right: @margin;
   }
+}
+.description{
+  font-size: 14px;
 }

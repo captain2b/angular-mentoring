@@ -3,7 +3,7 @@
     <div class="header">
       <p>{{courseItem.title}}</p>
       <p>{{getformattedDuration()}}</p>
-      <p>{{courseItem.creationDate}}</p>
+      <p>{{courseItem.creationDate | date: 'dd.MM.yyyy'}}</p>
     </div>
     <div class="description">{{courseItem.description}}</div>
   </div>

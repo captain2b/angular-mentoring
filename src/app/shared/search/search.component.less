@@ -1,0 +1,21 @@
+@import '../../../variables';
+:host {
+  display: flex;
+  > * {
+    margin-right: @margin;
+  }
+  > input {
+    border: 1px solid @secondary-color;
+    padding: 2px;
+    color: @primary-color;
+    border-radius: 4px;
+    background: transparent;
+    transition: all 0.2s;
+
+    &:focus {
+      outline: none;
+      color: @secondary-color;
+      border-color: @primary-color;
+    }
+  }
+}
