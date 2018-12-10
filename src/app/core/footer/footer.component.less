@@ -1,11 +1,22 @@
 @import "../../../variables.less";
-:host{
+
+:host {
   bottom: 0;
   background-color: @secondary-color;
   color: white;
   display: flex;
-  position: sticky;
-  flex-direction: row-reverse;
+  position: fixed;
+  width: 100%;
+  justify-content: flex-end;
   line-height: 38px;
   padding: 0 @margin;
+}
+
+.link {
+  color: white;
+  text-decoration: none;
+  margin-right: @margin;
+  &:hover, :active, :focus {
+    color: @background-color;
+  }
 }

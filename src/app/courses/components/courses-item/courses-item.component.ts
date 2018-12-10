@@ -14,8 +14,8 @@ export class CoursesItemComponent {
     this.delete.emit(this.courseItem.id);
   }
   getformattedDuration(): string {
-    const h = Math.floor(this.courseItem.duration / 60);
-    const m = this.courseItem.duration % 60;
-    return h + 'h' + m + 'min';
+    const hours = Math.floor(this.courseItem.duration / 60);
+    const mins = this.courseItem.duration % 60;
+    return `${hours}h ${mins}min`;
   }
 }
