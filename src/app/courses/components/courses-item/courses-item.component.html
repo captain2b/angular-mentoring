@@ -1,3 +1,14 @@
-<p>
-  courses-item works!
-</p>
+<div class="wrapper">
+  <div class="main">
+    <div class="header">
+      <p>{{courseItem.title}}</p>
+      <p>{{getformattedDuration()}}</p>
+      <p>{{courseItem.creationDate | date: 'dd.MM.yyyy'}}</p>
+    </div>
+    <div class="description">{{courseItem.description}}</div>
+  </div>
+  <div class="buttons">
+    <app-button text="Edit"></app-button>
+    <app-button text="Delete" (click)="onDelete()"></app-button>
+  </div>
+</div>

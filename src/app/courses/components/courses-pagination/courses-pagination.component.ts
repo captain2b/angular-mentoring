@@ -12,4 +12,7 @@ export class CoursesPaginationComponent implements OnInit {
   ngOnInit() {
   }
 
+  loadCourses(): void {
+    console.log('Load clicked');
+  }
 }

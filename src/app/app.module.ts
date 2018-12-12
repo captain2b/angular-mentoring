@@ -4,6 +4,8 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 import { UserEntityComponent } from './user-entity/user-entity.component';
+import { CoursesModule } from './courses/courses.module';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -13,6 +15,11 @@ import { UserEntityComponent } from './user-entity/user-entity.component';
   imports: [
     BrowserModule,
     CoreModule,
+    SharedModule,
+    CoursesModule,
+    AppRoutingModule,
+  ],
+  exports: [
     SharedModule,
   ],
   providers: [],

@@ -1,5 +1,5 @@
 export interface ICourseItem {
-  id: number;
+  id: number | string;
   title: string;
   creationDate?: Date;
   duration?: number;

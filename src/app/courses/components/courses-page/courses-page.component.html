@@ -1,3 +1,10 @@
-<p>
-  courses-page works!
-</p>
+<div class="header">
+  <app-search></app-search>
+  <app-button text="Add Course"></app-button>
+</div>
+<app-courses-item *ngFor="let item of courses"
+                  [courseItem]="item"
+                  (delete)="deleteCourse($event)"
+>
+</app-courses-item>
+<app-courses-pagination></app-courses-pagination>
