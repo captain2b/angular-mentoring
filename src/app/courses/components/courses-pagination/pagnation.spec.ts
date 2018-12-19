@@ -18,6 +18,7 @@ describe('CoursesPeginationComponent', () => {
     fixture = TestBed.createComponent(CoursesPaginationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    spyOn(component, 'loadCourses');
   });
 
   it('should be created', () => {
