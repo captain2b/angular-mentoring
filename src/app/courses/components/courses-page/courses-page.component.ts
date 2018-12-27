@@ -12,7 +12,7 @@ export class CoursesPageComponent implements OnInit, OnChanges{
     {
       id: 1,
       title: 'Video Course 1',
-      creationDate: new Date('01.01.2018'),
+      creationDate: new Date('2018-01-01'),
       duration: 110,
       topRated: true,
       description: 'dolorem ipsum, quia dolor sit, amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt,' +
@@ -22,7 +22,7 @@ export class CoursesPageComponent implements OnInit, OnChanges{
     {
       id: 2,
       title: 'Video Course 2',
-      creationDate: new Date('01.12.2020'),
+      creationDate: new Date('2020-01-12'),
       duration: 20,
       description: 'dolorem ipsum, quia dolor sit, amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt,' +
         ' ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis' +
@@ -31,7 +31,7 @@ export class CoursesPageComponent implements OnInit, OnChanges{
     {
       id: 3,
       title: 'Video Course 1',
-      creationDate: new Date('01.01.2018'),
+      creationDate: new Date('2018-01-01'),
       duration: 10,
       description: 'dolorem ipsum, quia dolor sit, amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt,' +
         ' ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis' +
@@ -49,7 +49,7 @@ export class CoursesPageComponent implements OnInit, OnChanges{
     {
       id: 5,
       title: 'Video Course 1',
-      creationDate: new Date('01.01.2018'),
+      creationDate: new Date('2018-01-01'),
       duration: 10,
       description: 'dolorem ipsum, quia dolor sit, amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt,' +
         ' ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis' +

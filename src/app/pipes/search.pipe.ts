@@ -8,5 +8,6 @@ export class SearchPipe implements PipeTransform {
     if (query) {
       return courses.filter(course => course.title.toLowerCase().search(query.toLowerCase()) !== -1);
     }
+    return courses;
   }
 }

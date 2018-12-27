@@ -5,8 +5,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class OrderByPipe implements PipeTransform {
   transform(courses) {
-    return courses.sort(
+    if (courses) {
+      return courses.sort(
       (a, b) => b.creationDate.getTime() - a.creationDate.getTime(),
     );
+    }
   }
 }

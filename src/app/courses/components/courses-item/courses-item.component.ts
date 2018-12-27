@@ -9,6 +9,7 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
 })
 export class CoursesItemComponent {
   @Input() courseItem: ICourseItem;
+  @Input() appBorderColor;
   @Output() delete = new EventEmitter<number | string>();
   star = faStar;
 
