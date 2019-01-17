@@ -1,8 +1,9 @@
-<div class="wrapper">
+<div class="wrapper"  appBorderColor [creationDate]="courseItem.creationDate" >
   <div class="main">
     <div class="header">
-      <p>{{courseItem.title}}</p>
-      <p id="duration">{{getformattedDuration()}}</p>
+      <p>{{courseItem.title | uppercase}}</p>
+      <fa-icon [ngClass]="{star: true, show: courseItem.topRated} " [icon]="star"></fa-icon>
+      <p id="duration">{{courseItem.duration | durationPipe}}</p>
       <p>{{courseItem.creationDate | date: 'dd.MM.yyyy'}}</p>
     </div>
     <div class="description">{{courseItem.description}}</div>

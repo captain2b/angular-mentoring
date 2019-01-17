@@ -4,6 +4,7 @@ export interface ICourseItem {
   creationDate?: Date;
   duration?: number;
   description: string;
+  topRated?: boolean;
 }
 export class CourseItemModel implements ICourseItem{
   id: number = 1;

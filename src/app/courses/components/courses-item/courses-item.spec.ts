@@ -1,7 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Component } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CoursesItemComponent } from './courses-item.component';
 import { SharedModule } from '../../../shared/shared.module';
+import { DurationPipe } from '../../../pipes/duration.pipe';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { OrderByPipe } from '../../../pipes/orderBy.pipe';
 
 @Component({
   template: `
@@ -30,17 +34,20 @@ class TestHostComponent {
 describe('CoursesItemComponent', () => {
   let component: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
-
+  let star;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CoursesItemComponent, TestHostComponent],
+      declarations: [CoursesItemComponent, TestHostComponent, DurationPipe, OrderByPipe],
       imports: [
         SharedModule,
+        FontAwesomeModule,
       ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
     }).compileComponents();
   }));
 
   beforeEach(() => {
+    star = faStar;
     fixture = TestBed.createComponent(TestHostComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

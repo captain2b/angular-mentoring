@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ICourseItem } from '../../models/course-item.model';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-courses-item',
@@ -8,14 +9,12 @@ import { ICourseItem } from '../../models/course-item.model';
 })
 export class CoursesItemComponent {
   @Input() courseItem: ICourseItem;
+  @Input() appBorderColor;
   @Output() delete = new EventEmitter<number | string>();
+  star = faStar;
 
   onDelete() {
     this.delete.emit(this.courseItem.id);
   }
-  getformattedDuration(): string {
-    const hours = Math.floor(this.courseItem.duration / 60);
-    const mins = this.courseItem.duration % 60;
-    return `${hours}h ${mins}min`;
-  }
+
 }
