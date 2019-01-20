@@ -4,7 +4,7 @@ import { ICourseItem } from '../courses/models/course-item.model';
 @Injectable({
   providedIn: 'root',
 })
-export class CoursesService {
+export class AuthService {
   constructor() {}
   login() {
     localStorage.setItem('token', 'fakeToken');
@@ -13,11 +13,12 @@ export class CoursesService {
   logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('userInfo');
+    console.log('logout');
   }
   getUserInfo() {
     return JSON.parse(localStorage.getItem('userInfo')).login;
   }
-  isAuthentificated(): boolean {
-    return localStorage.getItem('userInfo') && localStorage.getItem('token');
+  isAuthenticated() {
+    return false//localStorage.getItem('userInfo') && localStorage.getItem('token');
   }
 }

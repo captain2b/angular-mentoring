@@ -1,16 +1,16 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CoursesItemComponent } from '../courses-item/courses-item.component';
 import { SharedModule } from '../../../shared/shared.module';
-import { CoursesPageComponent } from './courses-page.component';
+import { AuthorizationComponent } from './authorization.component';
 import {CoursesPaginationComponent } from '../courses-pagination/courses-pagination.component';
 
 describe('AuthorizationComponent', () => {
-  let component: CoursesPageComponent;
-  let fixture: ComponentFixture<CoursesPageComponent>;
+  let component: AuthorizationComponent;
+  let fixture: ComponentFixture<AuthorizationComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CoursesItemComponent, CoursesPageComponent, CoursesPaginationComponent],
+      declarations: [CoursesItemComponent, AuthorizationComponent, CoursesPaginationComponent],
       imports: [
         SharedModule,
       ],
@@ -18,7 +18,7 @@ describe('AuthorizationComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CoursesPageComponent);
+    fixture = TestBed.createComponent(AuthorizationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

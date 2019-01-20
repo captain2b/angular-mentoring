@@ -8,6 +8,8 @@ import { CoursesModule } from './courses/courses.module';
 import { AppRoutingModule } from './app-routing.module';
 import { CoursesService } from './services/courses.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AuthorizationModule } from './authorization/authorization.module';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -21,9 +23,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     CoursesModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    AuthorizationModule,
   ],
   exports: [
     SharedModule,
+
   ],
   providers: [CoursesService],
   bootstrap: [AppComponent],

@@ -35,14 +35,7 @@ export class CoursesPageComponent implements OnInit, OnChanges{
   }
 
   deleteCourse(id: number): void {
-    this.coursesService.updateCourse(id, {
-      id: 10000,
-      title: 'Video Course 2',
-      creationDate: new Date(Date.now()),
-      duration: 200000,
-      description: 'dolorem ipsum, quia dolor sit, amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt,' +
-      ' ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis' +
-      ' suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur',
-    });
+    const conf = window.confirm('Do you really want to delete this course?');
+    conf && this.coursesService.removeCourse(id);
   }
 }

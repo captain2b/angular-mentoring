@@ -1,0 +1,12 @@
+<div class="header">
+  Login
+</div>
+<div>
+  <p>Email. *Required</p>
+  <input type="text" [(ngModel)]="email">
+</div>
+<div>
+  <p>Password. *Required</p>
+  <input type="text" [(ngModel)]="password">
+</div>
+<app-button text="LogIn" (click)="onLogin()"></app-button>
