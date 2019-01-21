@@ -79,5 +79,6 @@ export class CoursesService {
   }
   removeCourse(id: string | number) {
     this.courses = this.courses.filter(element => element.id !== id);
+    return this.courses;
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnChanges, OnInit, Output} from '@angular/core';
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -9,14 +9,13 @@ import { AuthService } from '../services/auth.service';
 export class AuthorizationComponent {
   email: string;
   password: string;
+  @Output() onLogin = new EventEmitter<string>();;
 
   constructor(
     public authService: AuthService,
   ) {
   }
-  onLogin() {
-    this.authService.login();
-    console.log('logged in successfully');
-    console.log(this.email,this.password);
+  onClickLogin() {
+    this.onLogin.next();
   }
 }

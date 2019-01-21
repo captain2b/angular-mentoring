@@ -36,6 +36,6 @@ export class CoursesPageComponent implements OnInit, OnChanges{
 
   deleteCourse(id: number): void {
     const conf = window.confirm('Do you really want to delete this course?');
-    conf && this.coursesService.removeCourse(id);
+    this.filteredCourses = this.courses = conf &&  this.coursesService.removeCourse(id);
   }
 }
