@@ -9,6 +9,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DurationPipe } from '../pipes/duration.pipe';
 import { OrderByPipe } from '../pipes/orderBy.pipe';
 import { SearchPipe } from '../pipes/search.pipe';
+import { EditCoursePageComponent } from './components/edit-course-page/edit-course-page.component';
 
 @NgModule({
   imports: [
@@ -20,6 +21,7 @@ import { SearchPipe } from '../pipes/search.pipe';
     CoursesPaginationComponent,
     CoursesItemComponent,
     CoursesPageComponent,
+    EditCoursePageComponent,
     BorderColorDirective,
     DurationPipe,
     OrderByPipe,

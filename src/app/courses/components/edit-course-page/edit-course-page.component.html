@@ -1,0 +1,15 @@
+
+  <p>Title:</p>
+  <input type="text" class="text" [(ngModel)]="title">
+  <p>Description:</p>
+  <textarea rows="20" class="text" [(ngModel)]="description"></textarea>
+    <p>Date:</p>
+  <input type="date" [(ngModel)]="date">
+
+  <p>Duration:</p>
+  <input [(ngModel)]="duration">
+  <p *ngIf="duration">{{duration | durationPipe}}</p>
+
+  <app-button text="Save" (click)="onSave()"></app-button>
+  <app-button text="Cancel" (click)="onCancel()"></app-button>
+

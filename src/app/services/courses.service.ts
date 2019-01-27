@@ -58,7 +58,7 @@ export class CoursesService {
   getList(): ICourseItem[] {
     return this.courses;
   }
-  getItemeById(id: string | number) {
+  getItemById(id: string | number) {
     return this.courses.find(element => element.id === id);
   }
   createCourse(id: string | number, title: string, duration?: number, description?: string, topRated?: boolean) {

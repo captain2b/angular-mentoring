@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --port 3000",
-    "build": "ng build",
+    "start": "ng serve --aot --port 3000",
+    "build": "ng build -prod",
     "test": "ng test",
     "coverage": "ng test --code-coverage",
     "lint": "ng lint",

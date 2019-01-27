@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
 import { ICourseItem } from '../../models/course-item.model';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 
@@ -6,6 +6,7 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
   selector: 'app-courses-item',
   templateUrl: './courses-item.component.html',
   styleUrls: ['./courses-item.component.less'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CoursesItemComponent {
   @Input() courseItem: ICourseItem;
