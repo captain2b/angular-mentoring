@@ -1,5 +1,6 @@
 import {Component, EventEmitter, OnChanges, OnInit, Output} from '@angular/core';
 import { AuthService } from '../services/auth.service';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-authorization',
@@ -9,13 +10,15 @@ import { AuthService } from '../services/auth.service';
 export class AuthorizationComponent {
   email: string;
   password: string;
-  @Output() onLogin = new EventEmitter<string>();;
 
   constructor(
     public authService: AuthService,
+    public router: Router,
   ) {
   }
   onClickLogin() {
-    this.onLogin.next();
+    this.authService.login();
+    console.log('logged in successfully');
+    this.router.navigate(['courses']);
   }
 }

@@ -9,7 +9,7 @@
     <div class="description">{{courseItem.description}}</div>
   </div>
   <div class="buttons">
-    <app-button text="Edit"></app-button>
+    <app-button text="Edit" (click)="onEdit()"></app-button>
     <app-button text="Delete" (click)="onDelete()" class="delete"></app-button>
   </div>
 </div>

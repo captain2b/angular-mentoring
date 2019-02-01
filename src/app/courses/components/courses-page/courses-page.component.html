@@ -7,6 +7,7 @@
   *ngFor="let item of filteredCourses | orderByPipe"
                   [courseItem]="item"
                   (delete)="deleteCourse($event)"
+                  (edit)="editCourse($event)"
 >
 </app-courses-item>
 <app-courses-pagination></app-courses-pagination>

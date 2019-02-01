@@ -1,6 +1,7 @@
 
   <p>Title:</p>
-  <input type="text" class="text" [(ngModel)]="title">
+  <input type="text" class="text" [(ngModel)]="title"
+         [ngModelOptions]="{ standalone: true }">
   <p>Description:</p>
   <textarea rows="20" class="text" [(ngModel)]="description"></textarea>
     <p>Date:</p>

@@ -12,10 +12,14 @@ export class CoursesItemComponent {
   @Input() courseItem: ICourseItem;
   @Input() appBorderColor;
   @Output() delete = new EventEmitter<number | string>();
+  @Output() edit = new EventEmitter<number | string>();
   star = faStar;
 
   onDelete() {
     this.delete.emit(this.courseItem.id);
+  }
+  onEdit() {
+    this.edit.emit(this.courseItem.id);
   }
 
 }
