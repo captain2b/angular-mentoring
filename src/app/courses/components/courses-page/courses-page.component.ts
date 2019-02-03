@@ -44,4 +44,7 @@ export class CoursesPageComponent implements OnInit, OnChanges{
       this.filteredCourses = this.courses =  this.coursesService.removeCourse(id);
     }
   }
+  addCourse() {
+    this.router.navigate(['courses/new']);
+  }
 }
