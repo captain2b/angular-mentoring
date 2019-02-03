@@ -1,6 +1,7 @@
 import { Component, OnChanges, OnInit } from '@angular/core';
 import { ICourseItem } from '../../models/course-item.model';
 import { SearchPipe } from '../../../pipes/search.pipe';
+import { CoursesService } from '../../../services/courses.service';
 
 @Component({
   selector: 'app-courses-page',
@@ -8,67 +9,22 @@ import { SearchPipe } from '../../../pipes/search.pipe';
   styleUrls: ['./courses-page.component.less'],
 })
 export class CoursesPageComponent implements OnInit, OnChanges{
-  courses: ICourseItem[] = [
-    {
-      id: 1,
-      title: 'Video Course 1',
-      creationDate: new Date('2018-01-01'),
-      duration: 110,
-      topRated: true,
-      description: 'dolorem ipsum, quia dolor sit, amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt,' +
-        ' ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis' +
-        ' suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur',
-    },
-    {
-      id: 2,
-      title: 'Video Course 2',
-      creationDate: new Date('2020-01-12'),
-      duration: 20,
-      description: 'dolorem ipsum, quia dolor sit, amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt,' +
-        ' ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis' +
-        ' suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur',
-    },
-    {
-      id: 3,
-      title: 'Video Course 1',
-      creationDate: new Date('2018-01-01'),
-      duration: 10,
-      description: 'dolorem ipsum, quia dolor sit, amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt,' +
-        ' ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis' +
-        ' suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur',
-    },
-    {
-      id: 4,
-      title: 'Video Course 2',
-      creationDate: new Date(Date.now()),
-      duration: 20,
-      description: 'dolorem ipsum, quia dolor sit, amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt,' +
-        ' ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis' +
-        ' suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur',
-    },
-    {
-      id: 5,
-      title: 'Video Course 1',
-      creationDate: new Date('2018-01-01'),
-      duration: 10,
-      description: 'dolorem ipsum, quia dolor sit, amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt,' +
-        ' ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis' +
-        ' suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur',
-    },
-  ];
+  courses: ICourseItem[] = [];
   filteredCourses = [];
   searchText;
 
   constructor(
     private filterCourses: SearchPipe,
+    private coursesService: CoursesService,
     ) {
   }
 
   ngOnInit() {
+    this.courses = this.coursesService.getList();
     this.filteredCourses = this.courses.slice();
-
   }
   ngOnChanges() {
+    this.courses = this.coursesService.getList();
     console.log(this.searchText);
   }
   onSearch(searchText: string): void {
@@ -79,6 +35,9 @@ export class CoursesPageComponent implements OnInit, OnChanges{
   }
 
   deleteCourse(id: number): void {
-    console.log(id);
+    const conf = window.confirm('Do you really want to delete this course?');
+    if (conf) {
+      this.filteredCourses = this.courses =  this.coursesService.removeCourse(id);
+    }
   }
 }

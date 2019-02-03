@@ -1,6 +1,11 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <app-header></app-header>
-<app-breadcrumbs></app-breadcrumbs>
-<app-courses-page>
-</app-courses-page>
+<ng-container *ngIf="isLoggedIn; else login">
+  <app-breadcrumbs></app-breadcrumbs>
+  <app-courses-page>
+  </app-courses-page>
+</ng-container>
+<ng-template #login>
+  <app-authorization (onLogin)="onLogin($event)"></app-authorization>
+</ng-template>
 <app-footer></app-footer>
