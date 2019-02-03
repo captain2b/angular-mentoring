@@ -1,16 +1,15 @@
-
-  <p>Title:</p>
-  <input type="text" class="text" [(ngModel)]="title"
-         [ngModelOptions]="{ standalone: true }">
+<p>Title:</p>
+  <input type="text" id="title" [(ngModel)]="title" required>
   <p>Description:</p>
-  <textarea rows="20" class="text" [(ngModel)]="description"></textarea>
+  <textarea rows="6" ngModel [(ngModel)]="description" required></textarea>
     <p>Date:</p>
-  <input type="date" [(ngModel)]="date">
-
+  <input type="date" [disabled]="id" [(ngModel)]="date" required>
+<div class="duration">
   <p>Duration:</p>
-  <input [(ngModel)]="duration">
+  <input type="number" [(ngModel)]="duration" required>
   <p *ngIf="duration">{{duration | durationPipe}}</p>
-
+</div>
+<div class="buttonContainer">
   <app-button text="Save" (click)="onSave()"></app-button>
   <app-button text="Cancel" (click)="onCancel()"></app-button>
-
+</div>

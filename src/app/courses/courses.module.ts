@@ -10,12 +10,14 @@ import { DurationPipe } from '../pipes/duration.pipe';
 import { OrderByPipe } from '../pipes/orderBy.pipe';
 import { SearchPipe } from '../pipes/search.pipe';
 import { EditCoursePageComponent } from './components/edit-course-page/edit-course-page.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
     CommonModule,
     SharedModule,
     FontAwesomeModule,
+    FormsModule,
   ],
   declarations: [
     CoursesPaginationComponent,
