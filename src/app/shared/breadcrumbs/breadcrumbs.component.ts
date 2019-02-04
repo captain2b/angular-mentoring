@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CoursesService } from '../../services/courses.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
@@ -8,8 +8,10 @@ import { filter } from 'rxjs/operators';
   templateUrl: './breadcrumbs.component.html',
   styleUrls: ['./breadcrumbs.component.less'],
 })
-export class BreadcrumbsComponent implements OnInit {
+export class BreadcrumbsComponent implements OnInit, OnDestroy {
 
+  public name : string = '';
+  public sub$: any;
   constructor(
     private coursesService: CoursesService,
     private router: Router,
@@ -18,10 +20,18 @@ export class BreadcrumbsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.params.subscribe((params) => {
-      const id = params.id;
-      console.log(this.coursesService.getItemById(id));
-
-    });
+    this.sub$ = this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)).subscribe((value) => {
+        if (value.url) {
+          const path = value.url.split('/');
+          const id = path[2];
+          if (id && path[1] === 'courses') {
+            this.name = id === 'new' ? id : this.coursesService.getItemById(id).title;
+          }
+        }
+      });
+  }
+  ngOnDestroy() {
+    this.sub$.unsubscribe();
   }
 }
