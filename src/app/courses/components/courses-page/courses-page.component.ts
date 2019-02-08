@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   templateUrl: './courses-page.component.html',
   styleUrls: ['./courses-page.component.less'],
 })
-export class CoursesPageComponent implements OnInit, OnChanges{
+export class CoursesPageComponent implements OnInit {
   courses: ICourseItem[] = [];
   filteredCourses = [];
   searchText;
@@ -22,12 +22,12 @@ export class CoursesPageComponent implements OnInit, OnChanges{
   }
 
   ngOnInit() {
-    this.courses = this.coursesService.getList();
+    this.coursesService.getList().subscribe(res => {
+      this.courses = res;
+      console.log(this.courses)
+
+    });
     this.filteredCourses = this.courses.slice();
-  }
-  ngOnChanges() {
-    this.courses = this.coursesService.getList();
-    console.log(this.searchText);
   }
   onSearch(searchText: string): void {
     this.filteredCourses = this.filterCourses.transform(

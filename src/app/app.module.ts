@@ -11,6 +11,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthorizationModule } from './authorization/authorization.module';
 import { FormsModule } from '@angular/forms';
 import { CanActivateGuard } from './guards/can-activate-guard';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { CanActivateGuard } from './guards/can-activate-guard';
     AppRoutingModule,
     BrowserAnimationsModule,
     AuthorizationModule,
+    HttpClientModule,
     FormsModule,
   ],
   exports: [
