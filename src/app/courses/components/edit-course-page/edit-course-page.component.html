@@ -1,13 +1,13 @@
 <p>Title:</p>
-  <input type="text" id="title" [(ngModel)]="title" required>
+  <input type="text" id="title" [(ngModel)]="name" required>
   <p>Description:</p>
   <textarea rows="6" ngModel [(ngModel)]="description" required></textarea>
     <p>Date:</p>
   <input type="date" [disabled]="id" [(ngModel)]="date" required>
 <div class="duration">
   <p>Duration:</p>
-  <input type="number" [(ngModel)]="duration" required>
-  <p *ngIf="duration">{{duration | durationPipe}}</p>
+  <input type="number" [(ngModel)]="length" required>
+  <p *ngIf="length">{{length | durationPipe}}</p>
 </div>
 <div class="buttonContainer">
   <app-button text="Save" (click)="onSave()"></app-button>

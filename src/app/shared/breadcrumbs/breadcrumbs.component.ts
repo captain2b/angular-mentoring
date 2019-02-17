@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CoursesService } from '../../services/courses.service';
 import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import {ICourseItem} from '../../courses/models/course-item.model';
 
 @Component({
   selector: 'app-breadcrumbs',
@@ -25,7 +26,11 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy {
         const path = value.url.split('/');
         const id = path[2];
         if (id && path[1] === 'courses') {
-          this.name = id === 'new' ? id : this.coursesService.getItemById(id).title;
+          if (id === 'new') {
+            this.name = id;
+          } else {
+            this.coursesService.getItemById(id).subscribe((res: ICourseItem) => this.name = res.name);
+          }
         }
       }
     });

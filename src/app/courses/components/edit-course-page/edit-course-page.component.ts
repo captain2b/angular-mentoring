@@ -11,10 +11,10 @@ import * as moment from 'moment';
 })
 export class EditCoursePageComponent implements OnInit, OnDestroy {
   public id: string;
-  public title: string;
+  public name: string;
   public description: string;
   public date: any;
-  public duration: number;
+  public length: number;
   public currentCourse: ICourseItem;
   private sub$:any;
 
@@ -27,13 +27,16 @@ export class EditCoursePageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.sub$ = this.route.params.subscribe((params) => {
       this.id = params.id;
-      this.currentCourse = this.coursesService.getItemById(this.id);
-      if (this.currentCourse) {
-        this.title = this.currentCourse.title;
-        this.description = this.currentCourse.description;
-        this.date = moment(this.currentCourse.creationDate).format('YYYY-MM-DD');
-        this.duration = this.currentCourse.duration;
-      }
+      this.coursesService.getItemById(this.id).subscribe((res: ICourseItem) => {
+        console.log(res)
+        this.currentCourse = res;
+        if (this.currentCourse) {
+          this.name = this.currentCourse.name;
+          this.description = this.currentCourse.description;
+          this.date = moment(this.currentCourse.date).format('YYYY-MM-DD');
+          this.length = this.currentCourse.length;
+        }
+      });
     });
   }
   ngOnDestroy() {
@@ -45,13 +48,13 @@ export class EditCoursePageComponent implements OnInit, OnDestroy {
         this.currentCourse.id,
         {
           ...this.currentCourse,
-          title: this.title,
-          duration: this.duration,
+          name: this.name,
+          length: this.length,
           description: this.description});
     } else {
       this.coursesService.createCourse('fakeId',
-                                       this.title,
-                                       this.duration,
+                                       this.name,
+                                       this.length,
                                        this.description,
       );
     }

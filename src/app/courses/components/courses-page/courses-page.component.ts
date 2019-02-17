@@ -12,7 +12,8 @@ import { Router } from '@angular/router';
 export class CoursesPageComponent implements OnInit {
   courses: ICourseItem[] = [];
   filteredCourses = [];
-  searchText;
+  coursesCount = 10;
+  searchText = '';
 
   constructor(
     private filterCourses: SearchPipe,
@@ -22,18 +23,13 @@ export class CoursesPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.coursesService.getList().subscribe(res => {
+    this.coursesService.getList(0, this.coursesCount).subscribe((res: ICourseItem[]) => {
       this.courses = res;
-      console.log(this.courses)
-
+      this.filteredCourses = this.courses.slice();
     });
-    this.filteredCourses = this.courses.slice();
   }
   onSearch(searchText: string): void {
-    this.filteredCourses = this.filterCourses.transform(
-    this.courses,
-    searchText,
-  );
+    this.searchText = searchText;
   }
   editCourse(id: number): void {
     this.router.navigate([`courses/${id}`]);
@@ -41,10 +37,29 @@ export class CoursesPageComponent implements OnInit {
   deleteCourse(id: string): void {
     const conf = window.confirm('Do you really want to delete this course?');
     if (conf) {
-      this.filteredCourses = this.courses =  this.coursesService.removeCourse(id);
+      this.coursesService.removeCourse(id).subscribe(
+        (res) => {
+          console.log(res);
+        },
+      );
     }
   }
   addCourse() {
     this.router.navigate(['courses/new']);
+  }
+  loadMore() {
+    this.coursesService
+      .getList(
+        0,
+        this.coursesCount,
+        this.searchText,
+      )
+      .subscribe(
+        (res: ICourseItem[]) => {
+          this.courses = res;
+          this.coursesCount += 10;
+        },
+        err => console.log(err.error),
+      );
   }
 }

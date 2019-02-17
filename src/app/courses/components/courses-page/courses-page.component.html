@@ -10,4 +10,4 @@
                   (edit)="editCourse($event)"
 >
 </app-courses-item>
-<app-courses-pagination></app-courses-pagination>
+<app-courses-pagination (loadMore)="loadMore($event)" ></app-courses-pagination>
