@@ -2,12 +2,12 @@
   <app-search (someEvent)="onSearch($event)" ></app-search>
   <app-button text="Add Course" (click)="addCourse()"></app-button>
 </div>
-<div class="noData" *ngIf="!filteredCourses || !filteredCourses.length">NO DATA</div>
+<div class="noData" *ngIf="!courses || !courses.length">NO DATA</div>
 <app-courses-item
-  *ngFor="let item of filteredCourses | orderByPipe"
+  *ngFor="let item of courses | orderByPipe"
                   [courseItem]="item"
                   (delete)="deleteCourse($event)"
                   (edit)="editCourse($event)"
 >
 </app-courses-item>
-<app-courses-pagination (loadMore)="loadMore($event)" ></app-courses-pagination>
+<app-courses-pagination *ngIf="canLoad" (loadMore)="loadMore($event)" ></app-courses-pagination>

@@ -10,16 +10,16 @@ export class CoursesService {
     private http: HttpClient,
   ) {}
 
-  getList(pageNumber = 0, count = '10', textFragment = '') {
-    return this.http.get(`http://localhost:3004/courses?start=${pageNumber}`,
-                         { params: { count, textFragment } });
+  getList(start = '0', count = '10', textFragment = '') {
+    return this.http.get('http://localhost:3004/courses',
+                         { params: { start, count, textFragment } });
   }
   getItemById(id: string) {
     return this.http.get(`http://localhost:3004/courses/${id}`);
 
   }
-  createCourse(id: string, title: string, duration?: number, description?: string, topRated?: boolean) {
-    return this.http.post('http://localhost:3004/courses/new', {
+  createCourse(id: string, name: string, length?: number, description?: string, topRated?: boolean) {
+    return this.http.post('http://localhost:3004/courses', {
       id,
       name,
       length,

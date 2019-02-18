@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +9,6 @@ export class AuthService {
     private http: HttpClient,
   ) {}
   login(login, psw) {
-    debugger
     return this.http.post(
       'http://localhost:3004/auth/login',
       JSON.stringify({ login, password: psw }));

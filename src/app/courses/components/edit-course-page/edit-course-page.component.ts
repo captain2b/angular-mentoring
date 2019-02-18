@@ -3,6 +3,7 @@ import { CoursesService } from '../../../services/courses.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ICourseItem } from '../../models/course-item.model';
 import * as moment from 'moment';
+import { UUID } from 'angular2-uuid';
 
 @Component({
   selector: 'app-edit-page',
@@ -27,8 +28,7 @@ export class EditCoursePageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.sub$ = this.route.params.subscribe((params) => {
       this.id = params.id;
-      this.coursesService.getItemById(this.id).subscribe((res: ICourseItem) => {
-        console.log(res)
+      this.id && this.coursesService.getItemById(this.id).subscribe((res: ICourseItem) => {
         this.currentCourse = res;
         if (this.currentCourse) {
           this.name = this.currentCourse.name;
@@ -50,15 +50,25 @@ export class EditCoursePageComponent implements OnInit, OnDestroy {
           ...this.currentCourse,
           name: this.name,
           length: this.length,
-          description: this.description});
+          description: this.description})
+        .subscribe(
+          () => {
+            this.router.navigate(['./courses']);
+          },
+          err => console.log(err),
+      );
     } else {
-      this.coursesService.createCourse('fakeId',
+      this.coursesService.createCourse(UUID.UUID(),
                                        this.name,
                                        this.length,
                                        this.description,
-      );
+      ).subscribe(
+        () => {
+          this.router.navigate(['./courses']);
+        },
+        err => console.log(err),
+        );
     }
-    this.router.navigate(['./courses']);
   }
   onCancel() {
     this.router.navigate(['./courses']);

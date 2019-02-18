@@ -20,12 +20,10 @@ export class AuthorizationComponent {
     this.authService.login('Morales', 'id').subscribe(
       (res) => {
         localStorage.setItem('token', res.token);
-        //this.authService.isAuthenticated = true;
-        //this.userService.getUser();
         this.router.navigate(['courses']);
 
       },
-      err => {
+      (err) => {
         console.log(err.error);
       });
   }
