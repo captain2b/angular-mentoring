@@ -3,7 +3,8 @@
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.1.3.
 
 ## Development server 🚩
-
+go to /json-server run npm i then npm start. This is BE. Navigate to `http://localhost:3004/`
+go to /src run npm i then npm start. This is UI. Navigate to `http://localhost:3000/`
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
 ## Build 📍

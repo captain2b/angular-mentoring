@@ -11,7 +11,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthorizationModule } from './authorization/authorization.module';
 import { FormsModule } from '@angular/forms';
 import { CanActivateGuard } from './guards/can-activate-guard';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { AuthInterceptor } from './interceptors/auth-interceptor';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,15 @@ import { HttpClientModule } from '@angular/common/http';
   exports: [
     SharedModule,
   ],
-  providers: [CoursesService, CanActivateGuard],
+  providers: [
+    CoursesService,
+    CanActivateGuard,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA,

@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ICourseItem } from '../../models/course-item.model';
 import { SearchPipe } from '../../../pipes/search.pipe';
 import { CoursesService } from '../../../services/courses.service';
@@ -11,40 +11,84 @@ import { Router } from '@angular/router';
 })
 export class CoursesPageComponent implements OnInit {
   courses: ICourseItem[] = [];
-  filteredCourses = [];
-  searchText;
+  coursesCount = 10;
+  searchText = '';
+  canLoad = true;
 
-  constructor(
-    private filterCourses: SearchPipe,
-    private coursesService: CoursesService,
-    private router: Router,
-    ) {
+  constructor(private coursesService: CoursesService,
+              private router: Router) {
   }
 
   ngOnInit() {
-    this.coursesService.getList().subscribe(res => {
+    this.coursesService.getList('0', this.coursesCount).subscribe((res: ICourseItem[]) => {
       this.courses = res;
-      console.log(this.courses)
-
+      if (res.length < 10) {
+        this.canLoad = false;
+      }
     });
-    this.filteredCourses = this.courses.slice();
   }
+
   onSearch(searchText: string): void {
-    this.filteredCourses = this.filterCourses.transform(
-    this.courses,
-    searchText,
-  );
+    this.searchText = searchText;
+    this.coursesService
+      .getList('0', '10', this.searchText)
+      .subscribe(
+        (res: ICourseItem[]) => {
+          this.courses = res;
+          this.coursesCount = 10;
+          if (res.length < 10) {
+            this.canLoad = false;
+          }
+        },
+        err => console.log(err.error),
+      );
   }
+
   editCourse(id: number): void {
     this.router.navigate([`courses/${id}`]);
   }
+
   deleteCourse(id: string): void {
     const conf = window.confirm('Do you really want to delete this course?');
     if (conf) {
-      this.filteredCourses = this.courses =  this.coursesService.removeCourse(id);
+      this.coursesService.removeCourse(id).subscribe(
+        () => {
+          this.coursesService
+            .getList('0', this.coursesCount, this.searchText)
+            .subscribe(
+              (res: ICourseItem[]) => {
+                this.courses = res;
+              },
+              err => console.log(err.error),
+            );
+        },
+        err => console.log(err),
+      );
     }
   }
+
   addCourse() {
     this.router.navigate(['courses/new']);
+  }
+
+  loadMore() {
+    if (this.canLoad) {
+      this.coursesService
+        .getList(
+          this.coursesCount,
+          10,
+          this.searchText,
+        )
+        .subscribe(
+          (res: ICourseItem[]) => {
+            this.courses = [...this.courses, ...res];
+            this.coursesCount += 10;
+            if (res.length < 10) {
+              this.canLoad = false;
+            }
+          },
+          err => console.log(err.error),
+        );
+    }
   }
 }
