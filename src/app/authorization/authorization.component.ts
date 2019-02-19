@@ -18,7 +18,7 @@ export class AuthorizationComponent {
   }
   onClickLogin() {
     this.authService.login(this.email, this.password).subscribe(
-      (res) => {
+      (res: {token: string}) => {
         localStorage.setItem('token', res.token);
         this.router.navigate(['courses']);
       },

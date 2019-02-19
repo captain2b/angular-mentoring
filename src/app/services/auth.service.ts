@@ -9,7 +9,6 @@ export class AuthService {
     private http: HttpClient,
   ) {}
   login(login, password) {
-    debugger
     return this.http.post(
       'http://localhost:3004/auth/login',
       { login, password });

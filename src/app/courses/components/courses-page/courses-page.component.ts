@@ -20,7 +20,7 @@ export class CoursesPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.coursesService.getList('0', this.coursesCount).subscribe((res: ICourseItem[]) => {
+    this.coursesService.getList('0', this.coursesCount.toString()).subscribe((res: ICourseItem[]) => {
       this.courses = res;
       if (res.length < 10) {
         this.canLoad = false;
@@ -54,7 +54,7 @@ export class CoursesPageComponent implements OnInit {
       this.coursesService.removeCourse(id).subscribe(
         () => {
           this.coursesService
-            .getList('0', this.coursesCount, this.searchText)
+            .getList('0', this.coursesCount.toString(), this.searchText)
             .subscribe(
               (res: ICourseItem[]) => {
                 this.courses = res;
@@ -75,8 +75,8 @@ export class CoursesPageComponent implements OnInit {
     if (this.canLoad) {
       this.coursesService
         .getList(
-          this.coursesCount,
-          10,
+          this.coursesCount.toString(),
+          '10',
           this.searchText,
         )
         .subscribe(
