@@ -17,11 +17,10 @@ export class AuthorizationComponent {
   ) {
   }
   onClickLogin() {
-    this.authService.login('Morales', 'id').subscribe(
-      (res) => {
+    this.authService.login(this.email, this.password).subscribe(
+      (res: {token: string}) => {
         localStorage.setItem('token', res.token);
         this.router.navigate(['courses']);
-
       },
       (err) => {
         console.log(err.error);

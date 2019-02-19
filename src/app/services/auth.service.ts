@@ -8,10 +8,10 @@ export class AuthService {
   constructor(
     private http: HttpClient,
   ) {}
-  login(login, psw) {
+  login(login, password) {
     return this.http.post(
       'http://localhost:3004/auth/login',
-      JSON.stringify({ login, password: psw }));
+      { login, password });
   }
   logout() {
     localStorage.removeItem('token');
@@ -21,7 +21,7 @@ export class AuthService {
   getUserInfo(id) {
     return this.http.get(`http://localhost:3004/users?id=${id}`);
   }
-  isAuthenticated(): boolean {
-    return !!(localStorage.getItem('userInfo') && localStorage.getItem('token'));
+  isAuthenticated() {
+    return localStorage.getItem('token');
   }
 }
