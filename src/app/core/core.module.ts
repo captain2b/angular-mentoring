@@ -4,13 +4,14 @@ import { HeaderComponent } from './header/header.component';
 import { LogoComponent } from './header/logo/logo.component';
 import { FooterComponent } from './footer/footer.component';
 import { SharedModule } from '../shared/shared.module';
+import { ErrorPageComponent } from './error-page/error-page.component';
 
 @NgModule({
   imports: [
     CommonModule,
     SharedModule,
   ],
-  declarations: [HeaderComponent, LogoComponent, FooterComponent],
-  exports: [HeaderComponent, FooterComponent],
+  declarations: [HeaderComponent, LogoComponent, FooterComponent, ErrorPageComponent],
+  exports: [HeaderComponent, FooterComponent, ErrorPageComponent],
 })
 export class CoreModule { }

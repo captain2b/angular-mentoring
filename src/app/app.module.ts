@@ -10,6 +10,7 @@ import { CoursesService } from './services/courses.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthorizationModule } from './authorization/authorization.module';
 import { FormsModule } from '@angular/forms';
+import { CanActivateGuard } from './guards/can-activate-guard';
 
 @NgModule({
   declarations: [
@@ -28,9 +29,8 @@ import { FormsModule } from '@angular/forms';
   ],
   exports: [
     SharedModule,
-
   ],
-  providers: [CoursesService],
+  providers: [CoursesService, CanActivateGuard],
   bootstrap: [AppComponent],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA,

@@ -8,7 +8,7 @@ export class CoursesService {
   constructor() {}
   private courses: ICourseItem[] = [
     {
-      id: 1,
+      id: '1',
       title: 'Video Course 1',
       creationDate: new Date('2018-01-01'),
       duration: 110,
@@ -18,7 +18,7 @@ export class CoursesService {
       ' suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur',
     },
     {
-      id: 2,
+      id: '2',
       title: 'Video Course 2',
       creationDate: new Date('2020-01-12'),
       duration: 20,
@@ -27,7 +27,7 @@ export class CoursesService {
       ' suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur',
     },
     {
-      id: 3,
+      id: '3',
       title: 'Video Course 1',
       creationDate: new Date('2018-01-01'),
       duration: 10,
@@ -36,7 +36,7 @@ export class CoursesService {
       ' suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur',
     },
     {
-      id: 4,
+      id: '4',
       title: 'Video Course 2',
       creationDate: new Date(Date.now()),
       duration: 20,
@@ -45,7 +45,7 @@ export class CoursesService {
       ' suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur',
     },
     {
-      id: 5,
+      id: '5',
       title: 'Video Course 1',
       creationDate: new Date('2018-01-01'),
       duration: 10,
@@ -58,10 +58,10 @@ export class CoursesService {
   getList(): ICourseItem[] {
     return this.courses;
   }
-  getItemeById(id: string | number) {
+  getItemById(id: string) {
     return this.courses.find(element => element.id === id);
   }
-  createCourse(id: string | number, title: string, duration?: number, description?: string, topRated?: boolean) {
+  createCourse(id: string, title: string, duration?: number, description?: string, topRated?: boolean) {
     this.courses.push(
       {
         id,
@@ -73,11 +73,11 @@ export class CoursesService {
       },
     );
   }
-  updateCourse(id: string | number, updatedCourse: ICourseItem) {
-    const index = this.courses.findIndex(element => element.id === id);
+  updateCourse(id: string, updatedCourse: ICourseItem) {
+    const index = this.courses.findIndex(element => element.id == id);
     this.courses[index] = updatedCourse;
   }
-  removeCourse(id: string | number) {
+  removeCourse(id: string) {
     this.courses = this.courses.filter(element => element.id !== id);
     return this.courses;
   }

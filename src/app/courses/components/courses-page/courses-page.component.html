@@ -1,12 +1,13 @@
 <div class="header">
   <app-search (someEvent)="onSearch($event)" ></app-search>
-  <app-button text="Add Course"></app-button>
+  <app-button text="Add Course" (click)="addCourse()"></app-button>
 </div>
 <div class="noData" *ngIf="!filteredCourses || !filteredCourses.length">NO DATA</div>
 <app-courses-item
   *ngFor="let item of filteredCourses | orderByPipe"
                   [courseItem]="item"
                   (delete)="deleteCourse($event)"
+                  (edit)="editCourse($event)"
 >
 </app-courses-item>
 <app-courses-pagination></app-courses-pagination>

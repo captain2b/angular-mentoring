@@ -1,5 +1,5 @@
 export interface ICourseItem {
-  id: number | string;
+  id: string;
   title: string;
   creationDate?: Date;
   duration?: number;
@@ -7,7 +7,7 @@ export interface ICourseItem {
   topRated?: boolean;
 }
 export class CourseItemModel implements ICourseItem{
-  id: number = 1;
+  id: string = '1';
   title: string = 'Course Title';
   description: string = 'Course Description';
 }
