@@ -17,11 +17,10 @@ export class AuthService {
   }
   logout() {
     localStorage.removeItem('token');
-    localStorage.removeItem('userInfo');
     console.log('logout');
   }
   getUserInfo() {
-    return this.http.get('http://localhost:3004/auth/user');
+    return this.http.post('http://localhost:3004/auth/userinfo');
   }
   public isAuthenticated() {
     return localStorage.getItem('token');

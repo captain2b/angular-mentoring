@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ICourseItem } from '../../models/course-item.model';
 import * as moment from 'moment';
 import { UUID } from 'angular2-uuid';
+import {Subject, Subscription} from 'rxjs/index';
 
 @Component({
   selector: 'app-edit-page',
@@ -17,18 +18,17 @@ export class EditCoursePageComponent implements OnInit, OnDestroy {
   public date: any;
   public length: number;
   public currentCourse: ICourseItem;
-  private sub$:any;
+  private sub$: Subscription [];
 
-  constructor(
-    private coursesService: CoursesService,
-    private route: ActivatedRoute,
-    private router: Router,
-  ) {
+  constructor(private coursesService: CoursesService,
+              private route: ActivatedRoute,
+              private router: Router) {
   }
+
   ngOnInit() {
-    this.sub$ = this.route.params.subscribe((params) => {
+    this.sub$.push(this.route.params.subscribe((params) => {
       this.id = params.id;
-      this.id && this.coursesService.getItemById(this.id).subscribe((res: ICourseItem) => {
+      this.sub$.push(this.id && this.coursesService.getItemById(this.id).subscribe((res: ICourseItem) => {
         this.currentCourse = res;
         if (this.currentCourse) {
           this.name = this.currentCourse.name;
@@ -41,15 +41,15 @@ export class EditCoursePageComponent implements OnInit, OnDestroy {
           console.log(err.error);
           this.router.navigate(['./404']);
         },
-      );
-    });
+      ));
+    }));
   }
   ngOnDestroy() {
-    this.sub$.unsubscribe();
+    this.sub$.forEach(s => s.unsubscribe());
   }
   onSave() {
     if (this.currentCourse) {
-      this.coursesService.updateCourse(
+      this.sub$.push(this.coursesService.updateCourse(
         this.currentCourse.id,
         {
           ...this.currentCourse,
@@ -61,7 +61,7 @@ export class EditCoursePageComponent implements OnInit, OnDestroy {
             this.router.navigate(['./courses']);
           },
           err => console.log(err),
-      );
+      ));
     } else {
       this.coursesService.createCourse(UUID.UUID(),
                                        this.name,
@@ -75,6 +75,7 @@ export class EditCoursePageComponent implements OnInit, OnDestroy {
         );
     }
   }
+
   onCancel() {
     this.router.navigate(['./courses']);
   }

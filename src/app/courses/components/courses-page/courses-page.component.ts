@@ -1,36 +1,37 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ICourseItem } from '../../models/course-item.model';
-import { SearchPipe } from '../../../pipes/search.pipe';
 import { CoursesService } from '../../../services/courses.service';
 import { Router } from '@angular/router';
+import {Subject, Subscription} from 'rxjs/index';
 
 @Component({
   selector: 'app-courses-page',
   templateUrl: './courses-page.component.html',
   styleUrls: ['./courses-page.component.less'],
 })
-export class CoursesPageComponent implements OnInit {
+export class CoursesPageComponent implements OnInit, OnDestroy {
   courses: ICourseItem[] = [];
   coursesCount = 10;
   searchText = '';
   canLoad = true;
+  sub$: Subscription [];
 
   constructor(private coursesService: CoursesService,
               private router: Router) {
   }
 
   ngOnInit() {
-    this.coursesService.getList('0', this.coursesCount.toString()).subscribe((res: ICourseItem[]) => {
+    this.sub$.push(this.coursesService.getList('0', this.coursesCount.toString()).subscribe((res: ICourseItem[]) => {
       this.courses = res;
       if (res.length < 10) {
         this.canLoad = false;
       }
-    });
+    }));
   }
 
   onSearch(searchText: string): void {
     this.searchText = searchText;
-    this.coursesService
+    this.sub$.push(this.coursesService
       .getList('0', '10', this.searchText)
       .subscribe(
         (res: ICourseItem[]) => {
@@ -41,7 +42,7 @@ export class CoursesPageComponent implements OnInit {
           }
         },
         err => console.log(err.error),
-      );
+      ));
   }
 
   editCourse(id: number): void {
@@ -51,7 +52,7 @@ export class CoursesPageComponent implements OnInit {
   deleteCourse(id: string): void {
     const conf = window.confirm('Do you really want to delete this course?');
     if (conf) {
-      this.coursesService.removeCourse(id).subscribe(
+      this.sub$.push(this.coursesService.removeCourse(id).subscribe(
         () => {
           this.coursesService
             .getList('0', this.coursesCount.toString(), this.searchText)
@@ -63,7 +64,7 @@ export class CoursesPageComponent implements OnInit {
             );
         },
         err => console.log(err),
-      );
+      ));
     }
   }
 
@@ -73,7 +74,7 @@ export class CoursesPageComponent implements OnInit {
 
   loadMore() {
     if (this.canLoad) {
-      this.coursesService
+      this.sub$.push( this.coursesService
         .getList(
           this.coursesCount.toString(),
           '10',
@@ -88,7 +89,10 @@ export class CoursesPageComponent implements OnInit {
             }
           },
           err => console.log(err.error),
-        );
+        ));
     }
+  }
+  ngOnDestroy() {
+    this.sub$.forEach(s => s.unsubscribe());
   }
 }

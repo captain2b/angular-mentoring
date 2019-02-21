@@ -1,9 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CoursesService } from '../../services/courses.service';
-import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
-import { filter } from 'rxjs/operators';
-import {ICourseItem} from '../../courses/models/course-item.model';
-import {AuthService} from "../../services/auth.service";
+import { NavigationEnd, Router } from '@angular/router';
+import { ICourseItem } from '../../courses/models/course-item.model';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-breadcrumbs',
@@ -14,6 +13,7 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy {
 
   public name : string = '';
   public sub$: any;
+  public sub2$: any;
   public showBreadcrumbs = false;
   constructor(
     private coursesService: CoursesService,
@@ -32,7 +32,7 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy {
           if (id === 'new') {
             this.name = id;
           } else {
-            this.coursesService.getItemById(id).subscribe((res: ICourseItem) => this.name = res.name);
+            this.sub2$ = this.coursesService.getItemById(id).subscribe((res: ICourseItem) => this.name = res.name);
           }
         }
       }
@@ -40,5 +40,6 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     this.sub$.unsubscribe();
+    this.sub2$.unsubscribe();
   }
 }
