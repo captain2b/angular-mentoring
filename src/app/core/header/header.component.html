@@ -1,5 +1,5 @@
 <app-logo></app-logo>
-<div class="right">
+<div class="right" *ngIf="auth.isAuthenticated()">
   <span>User Login</span>
-  <app-button text="Log off" (click)="onLogOn()"></app-button>
+  <app-button text="Log off" (click)="onLogOf()"></app-button>
 </div>

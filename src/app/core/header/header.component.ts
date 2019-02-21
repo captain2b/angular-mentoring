@@ -8,15 +8,19 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./header.component.less'],
 })
 export class HeaderComponent implements OnInit {
-
+  userLogin: string;
   constructor(
     private router: Router,
     private auth: AuthService,
               ) { }
 
   ngOnInit() {
+    if(this.auth.isAuthenticated()) {
+      this.auth.getUserInfo()._subscribe(res =>
+      console.log(res));
+    }
   }
-  onLogOn() {
+  onLogOf() {
     this.auth.logout();
     this.router.navigate(['./auth']);
   }

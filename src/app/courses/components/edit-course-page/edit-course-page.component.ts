@@ -36,7 +36,12 @@ export class EditCoursePageComponent implements OnInit, OnDestroy {
           this.date = moment(this.currentCourse.date).format('YYYY-MM-DD');
           this.length = this.currentCourse.length;
         }
-      });
+      },
+        (err) => {
+          console.log(err.error);
+          this.router.navigate(['./404']);
+        },
+      );
     });
   }
   ngOnDestroy() {

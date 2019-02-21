@@ -9,19 +9,21 @@ export class AuthService {
     private http: HttpClient,
   ) {}
   login(login, password) {
-    return this.http.post(
-      'http://localhost:3004/auth/login',
-      { login, password });
+    if (login && password) {
+      return this.http.post(
+        'http://localhost:3004/auth/login',
+        JSON.stringify({ login, password }));
+    }
   }
   logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('userInfo');
     console.log('logout');
   }
-  getUserInfo(id) {
-    return this.http.get(`http://localhost:3004/users?id=${id}`);
+  getUserInfo() {
+    return this.http.get('http://localhost:3004/auth/user');
   }
-  isAuthenticated() {
+  public isAuthenticated() {
     return localStorage.getItem('token');
   }
 }
