@@ -8,7 +8,7 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./header.component.less'],
 })
 export class HeaderComponent implements OnInit {
-  userLogin: string;
+  userLogin = '';
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -16,8 +16,11 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     if (this.auth.isAuthenticated()) {
-      this.auth.getUserInfo().subscribe(res =>
-      { this.userLogin = res.name.first + ' ' + res.name.last; },
+      this.auth.getUserInfo().subscribe((res: any) => {
+        if (res.name) {
+          this.userLogin = `${res.name.first} ${res.name.last}`;
+        }
+      },
       );
     }
   }

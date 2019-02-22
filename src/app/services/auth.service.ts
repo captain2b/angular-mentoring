@@ -20,7 +20,7 @@ export class AuthService {
     console.log('logout');
   }
   getUserInfo() {
-    return this.http.post('http://localhost:3004/auth/userinfo');
+    return this.http.post('http://localhost:3004/auth/userinfo', {});
   }
   public isAuthenticated() {
     return localStorage.getItem('token');

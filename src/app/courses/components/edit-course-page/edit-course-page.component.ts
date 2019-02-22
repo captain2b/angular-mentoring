@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ICourseItem } from '../../models/course-item.model';
 import * as moment from 'moment';
 import { UUID } from 'angular2-uuid';
-import {Subject, Subscription} from 'rxjs/index';
+import { Subscription } from 'rxjs/index';
 
 @Component({
   selector: 'app-edit-page',
@@ -18,7 +18,7 @@ export class EditCoursePageComponent implements OnInit, OnDestroy {
   public date: any;
   public length: number;
   public currentCourse: ICourseItem;
-  private sub$: Subscription [];
+  private sub$: Subscription [] = [];
 
   constructor(private coursesService: CoursesService,
               private route: ActivatedRoute,

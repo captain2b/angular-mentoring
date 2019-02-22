@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ICourseItem } from '../../models/course-item.model';
 import { CoursesService } from '../../../services/courses.service';
 import { Router } from '@angular/router';
-import {Subject, Subscription} from 'rxjs/index';
+import { Subscription } from 'rxjs/index';
 
 @Component({
   selector: 'app-courses-page',
@@ -14,7 +14,7 @@ export class CoursesPageComponent implements OnInit, OnDestroy {
   coursesCount = 10;
   searchText = '';
   canLoad = true;
-  sub$: Subscription [];
+  sub$: Subscription [] = [];
 
   constructor(private coursesService: CoursesService,
               private router: Router) {
