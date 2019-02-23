@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { CanActivateGuard } from './guards/can-activate-guard';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth-interceptor';
+import { LoaderService } from './services/loader.service';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { AuthInterceptor } from './interceptors/auth-interceptor';
   ],
   providers: [
     CoursesService,
+    LoaderService,
     CanActivateGuard,
     {
       provide: HTTP_INTERCEPTORS,

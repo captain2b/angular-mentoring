@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ICourseItem } from '../../models/course-item.model';
 import * as moment from 'moment';
 import { UUID } from 'angular2-uuid';
-import { Subscription } from 'rxjs/index';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-edit-page',
@@ -37,15 +37,15 @@ export class EditCoursePageComponent implements OnInit, OnDestroy {
           this.length = this.currentCourse.length;
         }
       },
-        (err) => {
-          console.log(err.error);
-          this.router.navigate(['./404']);
-        },
+                                                                                   (err) => {
+                                                                                     console.log(err.error);
+                                                                                     this.router.navigate(['./404']);
+                                                                                   },
       ));
     }));
   }
   ngOnDestroy() {
-    this.sub$.forEach(s => s.unsubscribe());
+    if (this.sub$) { this.sub$.forEach(s => s && s.unsubscribe()); }
   }
   onSave() {
     if (this.currentCourse) {

@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ICourseItem } from '../../models/course-item.model';
 import { CoursesService } from '../../../services/courses.service';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs/index';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-courses-page',
@@ -74,7 +74,7 @@ export class CoursesPageComponent implements OnInit, OnDestroy {
 
   loadMore() {
     if (this.canLoad) {
-      this.sub$.push( this.coursesService
+      this.sub$.push(this.coursesService
         .getList(
           this.coursesCount.toString(),
           '10',
@@ -93,6 +93,6 @@ export class CoursesPageComponent implements OnInit, OnDestroy {
     }
   }
   ngOnDestroy() {
-    this.sub$.forEach(s => s.unsubscribe());
+    if (this.sub$) { this.sub$.forEach(s => s && s.unsubscribe()); }
   }
 }
