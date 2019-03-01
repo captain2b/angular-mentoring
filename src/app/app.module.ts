@@ -14,6 +14,10 @@ import { CanActivateGuard } from './guards/can-activate-guard';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth-interceptor';
 import { LoaderService } from './services/loader.service';
+import { StoreModule } from '@ngrx/store';
+//import {metaReducers, reducers} from './reducers/index';
+import {StoreDevtoolsModule} from "@ngrx/store-devtools";
+import {environment} from "../environments/environment.prod";
 
 @NgModule({
   declarations: [
