@@ -78,5 +78,6 @@ export class EditCoursePageComponent implements OnInit, OnDestroy {
 
   onCancel() {
     this.router.navigate(['./courses']);
+
   }
 }
