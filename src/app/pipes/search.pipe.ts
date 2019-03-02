@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class SearchPipe implements PipeTransform {
   transform(courses, query) {
     if (query) {
-      return courses.filter(course => course.title.toLowerCase().search(query.toLowerCase()) !== -1);
+      return courses.filter(course => course.name.toLowerCase().search(query.toLowerCase()) !== -1);
     }
     return courses;
   }

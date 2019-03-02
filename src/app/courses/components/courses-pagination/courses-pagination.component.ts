@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-courses-pagination',
@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./courses-pagination.component.css'],
 })
 export class CoursesPaginationComponent implements OnInit {
+  @Output() loadMore = new EventEmitter<number | string>();
 
   constructor() { }
 
@@ -13,6 +14,6 @@ export class CoursesPaginationComponent implements OnInit {
   }
 
   loadCourses(): void {
-    console.log('Load clicked');
+    this.loadMore.emit();
   }
 }

@@ -8,15 +8,23 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./header.component.less'],
 })
 export class HeaderComponent implements OnInit {
-
+  userLogin = '';
   constructor(
     private router: Router,
     private auth: AuthService,
               ) { }
 
   ngOnInit() {
+    if (this.auth.isAuthenticated()) {
+      this.auth.getUserInfo().subscribe((res: any) => {
+        if (res.name) {
+          this.userLogin = `${res.name.first} ${res.name.last}`;
+        }
+      },
+      );
+    }
   }
-  onLogOn() {
+  onLogOf() {
     this.auth.logout();
     this.router.navigate(['./auth']);
   }

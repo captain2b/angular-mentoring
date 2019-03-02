@@ -3,6 +3,8 @@ import { CoursesService } from '../../../services/courses.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ICourseItem } from '../../models/course-item.model';
 import * as moment from 'moment';
+import { UUID } from 'angular2-uuid';
+import { Subscription } from 'rxjs/index';
 
 @Component({
   selector: 'app-edit-page',
@@ -11,52 +13,69 @@ import * as moment from 'moment';
 })
 export class EditCoursePageComponent implements OnInit, OnDestroy {
   public id: string;
-  public title: string;
+  public name: string;
   public description: string;
   public date: any;
-  public duration: number;
+  public length: number;
   public currentCourse: ICourseItem;
-  private sub$:any;
+  private sub$: Subscription [] = [];
 
-  constructor(
-    private coursesService: CoursesService,
-    private route: ActivatedRoute,
-    private router: Router,
-  ) {
+  constructor(private coursesService: CoursesService,
+              private route: ActivatedRoute,
+              private router: Router) {
   }
+
   ngOnInit() {
-    this.sub$ = this.route.params.subscribe((params) => {
+    this.sub$.push(this.route.params.subscribe((params) => {
       this.id = params.id;
-      this.currentCourse = this.coursesService.getItemById(this.id);
-      if (this.currentCourse) {
-        this.title = this.currentCourse.title;
-        this.description = this.currentCourse.description;
-        this.date = moment(this.currentCourse.creationDate).format('YYYY-MM-DD');
-        this.duration = this.currentCourse.duration;
-      }
-    });
+      this.sub$.push(this.id && this.coursesService.getItemById(this.id).subscribe((res: ICourseItem) => {
+        this.currentCourse = res;
+        if (this.currentCourse) {
+          this.name = this.currentCourse.name;
+          this.description = this.currentCourse.description;
+          this.date = moment(this.currentCourse.date).format('YYYY-MM-DD');
+          this.length = this.currentCourse.length;
+        }
+      },
+        (err) => {
+          console.log(err.error);
+          this.router.navigate(['./404']);
+        },
+      ));
+    }));
   }
   ngOnDestroy() {
-    this.sub$.unsubscribe();
+    this.sub$.forEach(s => s.unsubscribe());
   }
   onSave() {
     if (this.currentCourse) {
-      this.coursesService.updateCourse(
+      this.sub$.push(this.coursesService.updateCourse(
         this.currentCourse.id,
         {
           ...this.currentCourse,
-          title: this.title,
-          duration: this.duration,
-          description: this.description});
+          name: this.name,
+          length: this.length,
+          description: this.description})
+        .subscribe(
+          () => {
+            this.router.navigate(['./courses']);
+          },
+          err => console.log(err),
+      ));
     } else {
-      this.coursesService.createCourse('fakeId',
-                                       this.title,
-                                       this.duration,
+      this.coursesService.createCourse(UUID.UUID(),
+                                       this.name,
+                                       this.length,
                                        this.description,
-      );
+      ).subscribe(
+        () => {
+          this.router.navigate(['./courses']);
+        },
+        err => console.log(err),
+        );
     }
-    this.router.navigate(['./courses']);
   }
+
   onCancel() {
     this.router.navigate(['./courses']);
   }

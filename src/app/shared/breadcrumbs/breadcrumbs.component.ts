@@ -1,7 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CoursesService } from '../../services/courses.service';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { NavigationEnd, Router } from '@angular/router';
+import { ICourseItem } from '../../courses/models/course-item.model';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-breadcrumbs',
@@ -12,26 +13,33 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy {
 
   public name : string = '';
   public sub$: any;
+  public sub2$: any;
+  public showBreadcrumbs = false;
   constructor(
     private coursesService: CoursesService,
     private router: Router,
-    private route: ActivatedRoute,
+    private authService: AuthService,
   ) {
   }
 
   ngOnInit() {
-    this.sub$ = this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)).subscribe((value) => {
-        if (value.url) {
-          const path = value.url.split('/');
-          const id = path[2];
-          if (id && path[1] === 'courses') {
-            this.name = id === 'new' ? id : this.coursesService.getItemById(id).title;
+    this.sub$ = this.router.events.subscribe((value) => {
+      if (value instanceof NavigationEnd) {
+        const path = value.url.split('/');
+        const id = path[2];
+        if (id && path[1] === 'courses') {
+          this.showBreadcrumbs = true;
+          if (id === 'new') {
+            this.name = id;
+          } else {
+            this.sub2$ = this.coursesService.getItemById(id).subscribe((res: ICourseItem) => this.name = res.name);
           }
         }
-      });
+      }
+    });
   }
   ngOnDestroy() {
     this.sub$.unsubscribe();
+    this.sub2$.unsubscribe();
   }
 }

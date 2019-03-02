@@ -1,50 +1,98 @@
-import { Component, OnChanges, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ICourseItem } from '../../models/course-item.model';
-import { SearchPipe } from '../../../pipes/search.pipe';
 import { CoursesService } from '../../../services/courses.service';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs/index';
 
 @Component({
   selector: 'app-courses-page',
   templateUrl: './courses-page.component.html',
   styleUrls: ['./courses-page.component.less'],
 })
-export class CoursesPageComponent implements OnInit, OnChanges{
+export class CoursesPageComponent implements OnInit, OnDestroy {
   courses: ICourseItem[] = [];
-  filteredCourses = [];
-  searchText;
+  coursesCount = 10;
+  searchText = '';
+  canLoad = true;
+  sub$: Subscription [] = [];
 
-  constructor(
-    private filterCourses: SearchPipe,
-    private coursesService: CoursesService,
-    private router: Router,
-    ) {
+  constructor(private coursesService: CoursesService,
+              private router: Router) {
   }
 
   ngOnInit() {
-    this.courses = this.coursesService.getList();
-    this.filteredCourses = this.courses.slice();
+    this.sub$.push(this.coursesService.getList('0', this.coursesCount.toString()).subscribe((res: ICourseItem[]) => {
+      this.courses = res;
+      if (res.length < 10) {
+        this.canLoad = false;
+      }
+    }));
   }
-  ngOnChanges() {
-    this.courses = this.coursesService.getList();
-    console.log(this.searchText);
-  }
+
   onSearch(searchText: string): void {
-    this.filteredCourses = this.filterCourses.transform(
-    this.courses,
-    searchText,
-  );
+    this.searchText = searchText;
+    this.sub$.push(this.coursesService
+      .getList('0', '10', this.searchText)
+      .subscribe(
+        (res: ICourseItem[]) => {
+          this.courses = res;
+          this.coursesCount = 10;
+          if (res.length < 10) {
+            this.canLoad = false;
+          }
+        },
+        err => console.log(err.error),
+      ));
   }
+
   editCourse(id: number): void {
     this.router.navigate([`courses/${id}`]);
   }
+
   deleteCourse(id: string): void {
     const conf = window.confirm('Do you really want to delete this course?');
     if (conf) {
-      this.filteredCourses = this.courses =  this.coursesService.removeCourse(id);
+      this.sub$.push(this.coursesService.removeCourse(id).subscribe(
+        () => {
+          this.coursesService
+            .getList('0', this.coursesCount.toString(), this.searchText)
+            .subscribe(
+              (res: ICourseItem[]) => {
+                this.courses = res;
+              },
+              err => console.log(err.error),
+            );
+        },
+        err => console.log(err),
+      ));
     }
   }
+
   addCourse() {
     this.router.navigate(['courses/new']);
+  }
+
+  loadMore() {
+    if (this.canLoad) {
+      this.sub$.push( this.coursesService
+        .getList(
+          this.coursesCount.toString(),
+          '10',
+          this.searchText,
+        )
+        .subscribe(
+          (res: ICourseItem[]) => {
+            this.courses = [...this.courses, ...res];
+            this.coursesCount += 10;
+            if (res.length < 10) {
+              this.canLoad = false;
+            }
+          },
+          err => console.log(err.error),
+        ));
+    }
+  }
+  ngOnDestroy() {
+    this.sub$.forEach(s => s.unsubscribe());
   }
 }

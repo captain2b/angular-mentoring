@@ -1,6 +1,6 @@
-import {Component, EventEmitter, OnChanges, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, OnChanges, OnInit, Output } from '@angular/core';
 import { AuthService } from '../services/auth.service';
-import {Router} from "@angular/router";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-authorization',
@@ -17,8 +17,14 @@ export class AuthorizationComponent {
   ) {
   }
   onClickLogin() {
-    this.authService.login();
-    console.log('logged in successfully');
-    this.router.navigate(['courses']);
+    this.authService.login(this.email, this.password).subscribe(
+      (res: {token: string}) => {
+        localStorage.setItem('token', res.token);
+        this.router.navigate(['courses']);
+      },
+      (err) => {
+        console.log(err.error);
+      });
   }
+
 }

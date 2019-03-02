@@ -1,4 +1,4 @@
-<nav class="wrapper">
+<nav class="wrapper" *ngIf="authService.isAuthenticated()">
   <a href="/courses">
     Courses /
   </a>
