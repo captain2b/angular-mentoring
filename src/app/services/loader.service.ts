@@ -23,9 +23,3 @@ export class LoaderService {
 
   }
 }
-
-function f() {
-  const expression = null || 1 && 2 || 3;
-  const arr = ['pain', 'gain', 'comments', 'worries'];
-  return `no ${arr[Number(expression)]}`;
-}
