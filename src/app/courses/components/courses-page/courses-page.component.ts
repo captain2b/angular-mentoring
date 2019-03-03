@@ -9,29 +9,28 @@ import { Subscription } from 'rxjs';
   templateUrl: './courses-page.component.html',
   styleUrls: ['./courses-page.component.less'],
 })
-export class CoursesPageComponent implements OnInit, OnDestroy {
+export class CoursesPageComponent implements OnInit {
   courses: ICourseItem[] = [];
   coursesCount = 10;
   searchText = '';
   canLoad = true;
-  sub$: Subscription [] = [];
 
   constructor(private coursesService: CoursesService,
               private router: Router) {
   }
 
   ngOnInit() {
-    this.sub$.push(this.coursesService.getList('0', this.coursesCount.toString()).subscribe((res: ICourseItem[]) => {
+    this.coursesService.getList('0', this.coursesCount.toString()).subscribe((res: ICourseItem[]) => {
       this.courses = res;
       if (res.length < 10) {
         this.canLoad = false;
       }
-    }));
+    });
   }
 
   onSearch(searchText: string): void {
     this.searchText = searchText;
-    this.sub$.push(this.coursesService
+    this.coursesService
       .getList('0', '10', this.searchText)
       .subscribe(
         (res: ICourseItem[]) => {
@@ -42,7 +41,7 @@ export class CoursesPageComponent implements OnInit, OnDestroy {
           }
         },
         err => console.log(err.error),
-      ));
+      );
   }
 
   editCourse(id: number): void {
@@ -52,7 +51,7 @@ export class CoursesPageComponent implements OnInit, OnDestroy {
   deleteCourse(id: string): void {
     const conf = window.confirm('Do you really want to delete this course?');
     if (conf) {
-      this.sub$.push(this.coursesService.removeCourse(id).subscribe(
+      this.coursesService.removeCourse(id).subscribe(
         () => {
           this.coursesService
             .getList('0', this.coursesCount.toString(), this.searchText)
@@ -64,7 +63,7 @@ export class CoursesPageComponent implements OnInit, OnDestroy {
             );
         },
         err => console.log(err),
-      ));
+      );
     }
   }
 
@@ -74,7 +73,7 @@ export class CoursesPageComponent implements OnInit, OnDestroy {
 
   loadMore() {
     if (this.canLoad) {
-      this.sub$.push(this.coursesService
+      this.coursesService
         .getList(
           this.coursesCount.toString(),
           '10',
@@ -89,10 +88,7 @@ export class CoursesPageComponent implements OnInit, OnDestroy {
             }
           },
           err => console.log(err.error),
-        ));
+        );
     }
-  }
-  ngOnDestroy() {
-    if (this.sub$) { this.sub$.forEach(s => s && s.unsubscribe()); }
   }
 }

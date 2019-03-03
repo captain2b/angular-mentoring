@@ -13,7 +13,6 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy {
 
   public name : string = '';
   public sub$: any;
-  public sub2$: any;
   public showBreadcrumbs = false;
   constructor(
     private coursesService: CoursesService,
@@ -32,7 +31,7 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy {
           if (id === 'new') {
             this.name = id;
           } else {
-            this.sub2$ = this.coursesService.getItemById(id).subscribe((res: ICourseItem) => this.name = res.name);
+            this.coursesService.getItemById(id).subscribe((res: ICourseItem) => this.name = res.name);
           }
         }
       }
@@ -40,6 +39,5 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     if (this.sub$) { this.sub$.unsubscribe(); }
-    if (this.sub2$) { this.sub2$.unsubscribe(); }
   }
 }

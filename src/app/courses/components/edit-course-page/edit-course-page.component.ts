@@ -18,7 +18,7 @@ export class EditCoursePageComponent implements OnInit, OnDestroy {
   public date: any;
   public length: number;
   public currentCourse: ICourseItem;
-  private sub$: Subscription [] = [];
+  private sub$: Subscription;
 
   constructor(private coursesService: CoursesService,
               private route: ActivatedRoute,
@@ -26,9 +26,9 @@ export class EditCoursePageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.sub$.push(this.route.params.subscribe((params) => {
+    this.sub$ = this.route.params.subscribe((params) => {
       this.id = params.id;
-      this.sub$.push(this.id && this.coursesService.getItemById(this.id).subscribe((res: ICourseItem) => {
+      this.id && this.coursesService.getItemById(this.id).subscribe((res: ICourseItem) => {
         this.currentCourse = res;
         if (this.currentCourse) {
           this.name = this.currentCourse.name;
@@ -37,19 +37,19 @@ export class EditCoursePageComponent implements OnInit, OnDestroy {
           this.length = this.currentCourse.length;
         }
       },
-                                                                                   (err) => {
-                                                                                     console.log(err.error);
-                                                                                     this.router.navigate(['./404']);
-                                                                                   },
-      ));
-    }));
+                                                                    (err) => {
+                                                                      console.log(err.error);
+                                                                      this.router.navigate(['./404']);
+                                                                    },
+      );
+    });
   }
   ngOnDestroy() {
-    if (this.sub$) { this.sub$.forEach(s => s && s.unsubscribe()); }
+    if (this.sub$) { this.sub$.unsubscribe(); }
   }
   onSave() {
     if (this.currentCourse) {
-      this.sub$.push(this.coursesService.updateCourse(
+      this.coursesService.updateCourse(
         this.currentCourse.id,
         {
           ...this.currentCourse,
@@ -61,7 +61,7 @@ export class EditCoursePageComponent implements OnInit, OnDestroy {
             this.router.navigate(['./courses']);
           },
           err => console.log(err),
-      ));
+      );
     } else {
       this.coursesService.createCourse(UUID.UUID(),
                                        this.name,
