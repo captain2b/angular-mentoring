@@ -15,14 +15,7 @@ export class AuthService {
         JSON.stringify({ login, password }));
     }
   }
-  logout() {
-    localStorage.removeItem('token');
-    console.log('logout');
-  }
   getUserInfo() {
     return this.http.post('http://localhost:3004/auth/userinfo', {});
-  }
-  public isAuthenticated() {
-    return localStorage.getItem('token');
   }
 }

@@ -15,9 +15,11 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth-interceptor';
 import { LoaderService } from './services/loader.service';
 import { StoreModule } from '@ngrx/store';
-//import {metaReducers, reducers} from './reducers/index';
-import {StoreDevtoolsModule} from "@ngrx/store-devtools";
-import {environment} from "../environments/environment.prod";
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { reducers, metaReducers } from './reducers';
+import { environment } from '../environments/environment';
+import { EffectsModule } from '@ngrx/effects';
+import { AuthEffects } from './effects/auth.effects';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,10 @@ import {environment} from "../environments/environment.prod";
     AuthorizationModule,
     HttpClientModule,
     FormsModule,
+    StoreModule.forRoot(reducers, { metaReducers }),
+    !environment.production ? StoreDevtoolsModule.instrument() : [],
+    EffectsModule.forRoot([]),
+    EffectsModule.forFeature([AuthEffects]),
   ],
   exports: [
     SharedModule,
