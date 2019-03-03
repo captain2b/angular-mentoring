@@ -1,5 +1,5 @@
 <div class="header">
-  <app-search (someEvent)="onSearch($event)" ></app-search>
+  <app-search (searchEvent)="onSearch($event)" ></app-search>
   <app-button text="Add Course" (click)="addCourse()"></app-button>
 </div>
 <div class="noData" *ngIf="!courses || !courses.length">NO DATA</div>

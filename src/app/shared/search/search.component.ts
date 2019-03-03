@@ -10,7 +10,7 @@ import { debounceTime } from 'rxjs/operators';
 export class SearchComponent implements OnInit {
   searchText: string;
   searchSubject$ = new Subject<string>();
-  @Output() someEvent: any = new EventEmitter<any>();
+  @Output() searchEvent: any = new EventEmitter<any>();
 
   constructor() {
   }
@@ -20,10 +20,10 @@ export class SearchComponent implements OnInit {
       .pipe(debounceTime(200))
       .subscribe((search) => {
         if (search.length >= 3) {
-          this.someEvent.next(search);
+          this.searchEvent.next(search);
         }
         if (search.length === 0) {
-          this.someEvent.next('');
+          this.searchEvent.next('');
         }
       },
       );
