@@ -20,6 +20,10 @@ import { reducers, metaReducers } from './reducers';
 import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { AuthEffects } from './effects/auth.effects';
+import { StoreModule } from '@ngrx/store';
+//import {metaReducers, reducers} from './reducers/index';
+import {StoreDevtoolsModule} from "@ngrx/store-devtools";
+import {environment} from "../environments/environment.prod";
 
 @NgModule({
   declarations: [
