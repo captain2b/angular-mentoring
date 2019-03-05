@@ -4,6 +4,9 @@ export enum CoursesActionTypes {
   LoadCourses = '[Courses] Load Coursess',
   LoadCoursesError = '[Courses] Load Coursess Error',
   LoadCoursesSuccess = '[Courses] Load Coursess Success',
+  RemoveCourse = '[Courses] Remove Course',
+  RemoveCourseError = '[Courses] Remove Course Error',
+  RemoveCourseSuccess = '[Courses] Remove Course Success',
 }
 
 export class LoadCourses implements Action {
@@ -19,5 +22,19 @@ export class LoadCoursesSuccess implements Action {
   readonly type = CoursesActionTypes.LoadCoursesSuccess;
   constructor(public  courses: any) {}
 }
+export class RemoveCourse implements Action {
+  readonly type = CoursesActionTypes.RemoveCourse;
+  constructor(public id, public  start, public count, public searchText) {}
 
-export type CoursesActions = LoadCourses | LoadCoursesError | LoadCoursesSuccess;
+}
+export class RemoveCourseError implements Action {
+  readonly type = CoursesActionTypes.RemoveCourseError;
+  constructor(public  error: any) {}
+}
+export class RemoveCourseSuccess implements Action {
+  readonly type = CoursesActionTypes.RemoveCourseSuccess;
+  constructor() {}
+}
+
+export type CoursesActions = LoadCourses | LoadCoursesError | LoadCoursesSuccess
+  | RemoveCourse | RemoveCourseSuccess | RemoveCourseError;

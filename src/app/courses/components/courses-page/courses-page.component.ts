@@ -2,9 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ICourseItem } from '../../models/course-item.model';
 import { CoursesService } from '../../../services/courses.service';
 import { Router } from '@angular/router';
-import {Store} from "@ngrx/store";
-import {State} from "../../../reducers/index";
-import {LoadCourses} from "../../../actions/courses.actions";
+import { Store } from "@ngrx/store";
+import { State } from "../../../reducers/index";
+import {LoadCourses, RemoveCourse} from '../../../actions/courses.actions';
 
 @Component({
   selector: 'app-courses-page',
@@ -20,36 +20,18 @@ export class CoursesPageComponent implements OnInit {
   constructor(private coursesService: CoursesService,
               private store: Store<State>,
               private router: Router) {
-    store.select(state => state.courses).subscribe((res: ICourseItem[]) => {
-      console.log(res)
-      this.courses = res.courses;
+    store.select(state => state.courses).subscribe((res) => {
+      this.courses = [...this.courses, ...res.courses];
     });
   }
 
   ngOnInit() {
     this.store.dispatch(new LoadCourses('0', this.coursesCount.toString(), ''));
-    // this.coursesService.getList('0', this.coursesCount.toString()).subscribe((res: ICourseItem[]) => {
-    //   this.courses = res;
-    //   if (res.length < 10) {
-    //     this.canLoad = false;
-    //   }
-    // });
   }
 
   onSearch(searchText: string): void {
     this.searchText = searchText;
-    this.coursesService
-      .getList('0', '10', this.searchText)
-      .subscribe(
-        (res: ICourseItem[]) => {
-          this.courses = res;
-          this.coursesCount = 10;
-          if (res.length < 10) {
-            this.canLoad = false;
-          }
-        },
-        err => console.log(err.error),
-      );
+    this.store.dispatch(new LoadCourses('0', '10', this.searchText));
   }
 
   editCourse(id: number): void {
@@ -59,19 +41,8 @@ export class CoursesPageComponent implements OnInit {
   deleteCourse(id: string): void {
     const conf = window.confirm('Do you really want to delete this course?');
     if (conf) {
-      this.coursesService.removeCourse(id).subscribe(
-        () => {
-          this.coursesService
-            .getList('0', this.coursesCount.toString(), this.searchText)
-            .subscribe(
-              (res: ICourseItem[]) => {
-                this.courses = res;
-              },
-              err => console.log(err.error),
-            );
-        },
-        err => console.log(err),
-      );
+      this.store.dispatch(new RemoveCourse(id, '0', this.coursesCount.toString(), this.searchText));
+      this.store.dispatch(new LoadCourses('0', this.coursesCount.toString(), this.searchText));
     }
   }
 
@@ -80,23 +51,9 @@ export class CoursesPageComponent implements OnInit {
   }
 
   loadMore() {
-    if (this.canLoad) {
-      this.coursesService
-        .getList(
-          this.coursesCount.toString(),
-          '10',
-          this.searchText,
-        )
-        .subscribe(
-          (res: ICourseItem[]) => {
-            this.courses = [...this.courses, ...res];
-            this.coursesCount += 10;
-            if (res.length < 10) {
-              this.canLoad = false;
-            }
-          },
-          err => console.log(err.error),
-        );
-    }
+    this.store.dispatch(new LoadCourses(
+        this.coursesCount.toString(),
+        '10',
+        this.searchText));
   }
 }
