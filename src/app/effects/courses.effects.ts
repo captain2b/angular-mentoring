@@ -18,7 +18,6 @@ export class CoursesEffects {
 
         this.coursesService.getList(action['start'], action['count'], action['searchText']).pipe(
         map((res) => {
-          console.log(res)
           return new LoadCoursesSuccess(res);
         }),
         catchError(err => of(new LoadCoursesError(err))),

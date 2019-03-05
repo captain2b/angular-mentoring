@@ -20,16 +20,20 @@ export class CoursesPageComponent implements OnInit {
   constructor(private coursesService: CoursesService,
               private store: Store<State>,
               private router: Router) {
+    store.select(state => state.courses).subscribe((res: ICourseItem[]) => {
+      console.log(res)
+      this.courses = res.courses;
+    });
   }
 
   ngOnInit() {
     this.store.dispatch(new LoadCourses('0', this.coursesCount.toString(), ''));
-    this.coursesService.getList('0', this.coursesCount.toString()).subscribe((res: ICourseItem[]) => {
-      this.courses = res;
-      if (res.length < 10) {
-        this.canLoad = false;
-      }
-    });
+    // this.coursesService.getList('0', this.coursesCount.toString()).subscribe((res: ICourseItem[]) => {
+    //   this.courses = res;
+    //   if (res.length < 10) {
+    //     this.canLoad = false;
+    //   }
+    // });
   }
 
   onSearch(searchText: string): void {
