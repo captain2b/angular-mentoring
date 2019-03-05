@@ -22,7 +22,7 @@ export const initialState: AuthState = {
 export function authReducer(state = initialState, action: LoginActions): AuthState {
   switch (action.type) {
     case LoginActionTypes.Login:
-      return {
+      return <AuthState>{
         ...state,
         loading: true,
       };

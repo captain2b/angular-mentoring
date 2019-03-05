@@ -2,7 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ICourseItem } from '../../models/course-item.model';
 import { CoursesService } from '../../../services/courses.service';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import {Store} from "@ngrx/store";
+import {State} from "../../../reducers/index";
+import {LoadCourses} from "../../../actions/courses.actions";
 
 @Component({
   selector: 'app-courses-page',
@@ -16,10 +18,12 @@ export class CoursesPageComponent implements OnInit {
   canLoad = true;
 
   constructor(private coursesService: CoursesService,
+              private store: Store<State>,
               private router: Router) {
   }
 
   ngOnInit() {
+    this.store.dispatch(new LoadCourses('0', this.coursesCount.toString(), ''));
     this.coursesService.getList('0', this.coursesCount.toString()).subscribe((res: ICourseItem[]) => {
       this.courses = res;
       if (res.length < 10) {
