@@ -34,7 +34,9 @@ export class HeaderComponent implements OnInit {
       if (value instanceof NavigationEnd) {
         if (this.isAuth) {
           this.store.dispatch(new GetUser());
-          this.userLogin = !this.loading && `${this.userInfo.name.first} ${this.userInfo.name.last}`;
+          if (this.userInfo.name) {
+            this.userLogin = `${this.userInfo.name.first} ${this.userInfo.name.last}`;
+          }
         }
       }
     });
