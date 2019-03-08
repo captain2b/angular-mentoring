@@ -7,6 +7,12 @@ export enum CoursesActionTypes {
   RemoveCourse = '[Courses] Remove Course',
   RemoveCourseError = '[Courses] Remove Course Error',
   RemoveCourseSuccess = '[Courses] Remove Course Success',
+  AddCourse = '[Courses] Add Course',
+  AddCourseError = '[Courses] Add Course Error',
+  AddCourseSuccess = '[Courses] Add Course Success',
+  EditCourse = '[Courses] Edit Course',
+  EditCourseError = '[Courses] Edit Course Error',
+  EditCourseSuccess = '[Courses] Edit Course Success',
 }
 
 export class LoadCourses implements Action {
@@ -35,6 +41,32 @@ export class RemoveCourseSuccess implements Action {
   readonly type = CoursesActionTypes.RemoveCourseSuccess;
   constructor() {}
 }
+export class AddCourse implements Action {
+  readonly type = CoursesActionTypes.AddCourse;
+  constructor(public id, public  name, public length, public description) {}
 
-export type CoursesActions = LoadCourses | LoadCoursesError | LoadCoursesSuccess
-  | RemoveCourse | RemoveCourseSuccess | RemoveCourseError;
+}
+export class AddCourseError implements Action {
+  readonly type = CoursesActionTypes.AddCourseError;
+  constructor(public  error: any) {}
+}
+export class AddCourseSuccess implements Action {
+  readonly type = CoursesActionTypes.AddCourseSuccess;
+  constructor() {}
+}
+export class EditCourse implements Action {
+  readonly type = CoursesActionTypes.EditCourse;
+  constructor(public id, public  updatedCourse) {}
+
+}
+export class EditCourseError implements Action {
+  readonly type = CoursesActionTypes.EditCourseError;
+  constructor(public  error: any) {}
+}
+export class EditCourseSuccess implements Action {
+  readonly type = CoursesActionTypes.EditCourseSuccess;
+  constructor() {}
+}
+
+export type CoursesActions = LoadCourses | LoadCoursesError | LoadCoursesSuccess | RemoveCourse | RemoveCourseSuccess
+  | RemoveCourseError | AddCourseSuccess | AddCourse | AddCourseError | EditCourseSuccess | EditCourse | EditCourseError;

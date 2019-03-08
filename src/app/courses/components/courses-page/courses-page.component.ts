@@ -17,11 +17,11 @@ export class CoursesPageComponent implements OnInit {
   searchText = '';
   canLoad = true;
 
-  constructor(private coursesService: CoursesService,
+  constructor(
               private store: Store<State>,
               private router: Router) {
     store.select(state => state.courses).subscribe((res) => {
-      this.courses = [...this.courses, ...res.courses];
+      this.courses = res.courses;
     });
   }
 
@@ -31,7 +31,7 @@ export class CoursesPageComponent implements OnInit {
 
   onSearch(searchText: string): void {
     this.searchText = searchText;
-    this.store.dispatch(new LoadCourses('0', '10', this.searchText));
+    this.store.dispatch(new LoadCourses('0',  this.coursesCount.toString(), this.searchText));
   }
 
   editCourse(id: number): void {
@@ -52,8 +52,12 @@ export class CoursesPageComponent implements OnInit {
 
   loadMore() {
     this.store.dispatch(new LoadCourses(
+        '0',
         this.coursesCount.toString(),
-        '10',
         this.searchText));
+    // if (this.courses.length < this.coursesCount) {
+    //   this.canLoad = false;
+    // }
+    this.coursesCount += 10;
   }
 }

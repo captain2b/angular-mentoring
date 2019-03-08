@@ -6,7 +6,9 @@ import { AuthService } from '../services/auth.service';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import {
-  CoursesActionTypes,
+  AddCourseError,
+  AddCourseSuccess,
+  CoursesActionTypes, EditCourseError, EditCourseSuccess,
   LoadCourses,
   LoadCoursesError,
   LoadCoursesSuccess,
@@ -39,6 +41,32 @@ export class CoursesEffects {
             return new RemoveCourseSuccess();
           }),
           catchError(err => of(new RemoveCourseError(err))),
+        ),
+  ),
+  );
+  @Effect()
+  addCourse$: Observable<any> = this.actions$.pipe(
+    ofType(CoursesActionTypes.AddCourse),
+    mergeMap(action =>
+      this.coursesService.createCourse(action['id'], action['name'], action['length'], action['description']).pipe(
+          map((res) => {
+            this.router.navigate(['./courses']);
+            return new AddCourseSuccess();
+          }),
+          catchError(err => of(new AddCourseError(err))),
+        ),
+  ),
+  );
+  @Effect()
+  EditCourse$: Observable<any> = this.actions$.pipe(
+    ofType(CoursesActionTypes.EditCourse),
+    mergeMap(action =>
+      this.coursesService.updateCourse(action['id'], action['updatedCourse']).pipe(
+          map((res) => {
+            this.router.navigate(['./courses']);
+            return new EditCourseSuccess();
+          }),
+          catchError(err => of(new EditCourseError(err))),
         ),
   ),
   );
