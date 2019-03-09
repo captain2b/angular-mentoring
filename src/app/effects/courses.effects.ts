@@ -6,12 +6,13 @@ import { AuthService } from '../services/auth.service';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import {
+  AddCourse,
   AddCourseError,
   AddCourseSuccess,
-  CoursesActionTypes, EditCourseError, EditCourseSuccess,
+  CoursesActionTypes, EditCourse, EditCourseError, EditCourseSuccess,
   LoadCourses,
   LoadCoursesError,
-  LoadCoursesSuccess,
+  LoadCoursesSuccess, RemoveCourse,
   RemoveCourseError,
   RemoveCourseSuccess,
 } from '../actions/courses.actions';
@@ -23,52 +24,44 @@ export class CoursesEffects {
   @Effect()
   loadCourses$: Observable<any> = this.actions$.pipe(
     ofType(CoursesActionTypes.LoadCourses),
-    mergeMap(action =>
-      this.coursesService.getList(action['start'], action['count'], action['searchText']).pipe(
-        map((res) => {
-          return new LoadCoursesSuccess(res);
-        }),
-        catchError(err => of(new LoadCoursesError(err))),
-      ),
-    ),
+    mergeMap((action: LoadCourses) =>
+      this.coursesService.getList(action.start, action.count, action.searchText)),
+    map((res) => {
+      return new LoadCoursesSuccess(res);
+    }),
+    catchError(err => of(new LoadCoursesError(err))),
   );
   @Effect()
   removeCourse$: Observable<any> = this.actions$.pipe(
     ofType(CoursesActionTypes.RemoveCourse),
-    mergeMap(action =>
-      this.coursesService.removeCourse(action['id']).pipe(
-          map((res) => {
-            return new RemoveCourseSuccess();
-          }),
-          catchError(err => of(new RemoveCourseError(err))),
-        ),
-  ),
+    mergeMap((action: RemoveCourse) =>
+      this.coursesService.removeCourse(action.id)),
+    map((res) => {
+      return new RemoveCourseSuccess();
+    }),
+    catchError(err => of(new RemoveCourseError(err))),
   );
   @Effect()
   addCourse$: Observable<any> = this.actions$.pipe(
     ofType(CoursesActionTypes.AddCourse),
-    mergeMap(action =>
-      this.coursesService.createCourse(action['id'], action['name'], action['length'], action['description']).pipe(
-          map((res) => {
-            this.router.navigate(['./courses']);
-            return new AddCourseSuccess();
-          }),
-          catchError(err => of(new AddCourseError(err))),
-        ),
-  ),
+    mergeMap((action: AddCourse) =>
+      this.coursesService.createCourse(action.id, action.name, action.length, action.description)),
+    map((res) => {
+      this.router.navigate(['./courses']);
+      return new AddCourseSuccess();
+    }),
+    catchError(err => of(new AddCourseError(err))),
   );
   @Effect()
-  EditCourse$: Observable<any> = this.actions$.pipe(
+  editCourse$: Observable<any> = this.actions$.pipe(
     ofType(CoursesActionTypes.EditCourse),
-    mergeMap(action =>
-      this.coursesService.updateCourse(action['id'], action['updatedCourse']).pipe(
-          map((res) => {
-            this.router.navigate(['./courses']);
-            return new EditCourseSuccess();
-          }),
-          catchError(err => of(new EditCourseError(err))),
-        ),
-  ),
+    mergeMap((action: EditCourse) =>
+      this.coursesService.updateCourse(action.id, action.updatedCourse)),
+    map((res) => {
+      this.router.navigate(['./courses']);
+      return new EditCourseSuccess();
+    }),
+    catchError(err => of(new EditCourseError(err))),
   );
 
   constructor(private actions$: Actions<LoginActions>,

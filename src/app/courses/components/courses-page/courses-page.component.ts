@@ -22,6 +22,9 @@ export class CoursesPageComponent implements OnInit {
               private router: Router) {
     store.select(state => state.courses).subscribe((res) => {
       this.courses = res.courses;
+      if (this.courses.length && this.courses.length < this.coursesCount) {
+        this.canLoad = false;
+      }
     });
   }
 
@@ -51,13 +54,10 @@ export class CoursesPageComponent implements OnInit {
   }
 
   loadMore() {
+    this.coursesCount += 10;
     this.store.dispatch(new LoadCourses(
         '0',
         this.coursesCount.toString(),
         this.searchText));
-    // if (this.courses.length < this.coursesCount) {
-    //   this.canLoad = false;
-    // }
-    this.coursesCount += 10;
   }
 }

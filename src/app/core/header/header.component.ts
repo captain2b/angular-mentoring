@@ -4,6 +4,7 @@ import { AuthService } from '../../services/auth.service';
 import { State } from '../../reducers';
 import { Store } from '@ngrx/store';
 import { GetUser, LogOff } from '../../actions/login.actions';
+import {Subject} from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -14,7 +15,7 @@ export class HeaderComponent implements OnInit {
   public userLogin = '';
   public userInfo: any;
   loading;
-  public isAuth;
+  public isAuth = new Subject();
   public sub$: any;
 
   constructor(
@@ -24,21 +25,15 @@ export class HeaderComponent implements OnInit {
   ) {
     store.select(state => state.auth).subscribe((res) => {
       this.loading = res.loading;
-      this.isAuth = res.user.isAuthentificated;
+      this.isAuth.next(res.user.isAuthentificated);
       this.userInfo = res.user.info;
+      this.userLogin = `${this.userInfo.name.first} ${this.userInfo.name.last}`;
+
     });
   }
-
   ngOnInit() {
-    this.sub$ = this.router.events.subscribe((value) => {
-      if (value instanceof NavigationEnd) {
-        if (this.isAuth) {
-          this.store.dispatch(new GetUser());
-          if (this.userInfo.name) {
-            this.userLogin = `${this.userInfo.name.first} ${this.userInfo.name.last}`;
-          }
-        }
-      }
+    this.isAuth.subscribe((value) => {
+      value && this.store.dispatch(new GetUser());
     });
   }
 
@@ -46,4 +41,5 @@ export class HeaderComponent implements OnInit {
     this.store.dispatch(new LogOff());
     this.router.navigate(['./auth']);
   }
+
 }
