@@ -2,10 +2,11 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ICourseItem } from '../../models/course-item.model';
 import { CoursesService } from '../../../services/courses.service';
 import { Router } from '@angular/router';
-import { Store } from "@ngrx/store";
-import { State } from "../../../reducers/index";
-import {LoadCourses, RemoveCourse} from '../../../actions/courses.actions';
+import { Store } from '@ngrx/store';
+import { State } from '../../../reducers/index';
+import { LoadCourses, RemoveCourse } from '../../../actions/courses.actions';
 
+const ITEMS_COUNT = 10;
 @Component({
   selector: 'app-courses-page',
   templateUrl: './courses-page.component.html',
@@ -13,7 +14,7 @@ import {LoadCourses, RemoveCourse} from '../../../actions/courses.actions';
 })
 export class CoursesPageComponent implements OnInit {
   courses: ICourseItem[] = [];
-  coursesCount = 10;
+  coursesCount = ITEMS_COUNT;
   searchText = '';
   canLoad = true;
 
@@ -54,7 +55,7 @@ export class CoursesPageComponent implements OnInit {
   }
 
   loadMore() {
-    this.coursesCount += 10;
+    this.coursesCount += ITEMS_COUNT;
     this.store.dispatch(new LoadCourses(
         '0',
         this.coursesCount.toString(),
