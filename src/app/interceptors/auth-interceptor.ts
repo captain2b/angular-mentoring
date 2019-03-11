@@ -6,15 +6,20 @@ import {
   HttpEvent,
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { State } from '../reducers';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
+  private token;
+  constructor(private store: Store<State>) {
+    store.select(state => state.auth).subscribe((res) =>  { console.log(res); this.token = res.user && res.user.token; });
 
+  }
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const token = localStorage.getItem('token');
-    if (token) {
+    if (this.token) {
       const request = req.clone({
-        headers: req.headers.set('Authorization', token),
+        headers: req.headers.set('Authorization', this.token),
       });
       return next.handle(request);
     }

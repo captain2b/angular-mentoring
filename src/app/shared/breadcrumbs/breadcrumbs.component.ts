@@ -2,7 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CoursesService } from '../../services/courses.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { ICourseItem } from '../../courses/models/course-item.model';
-import { AuthService } from '../../services/auth.service';
+import { Store } from '@ngrx/store';
+import { State } from '../../reducers';
 
 @Component({
   selector: 'app-breadcrumbs',
@@ -14,11 +15,15 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy {
   public name : string = '';
   public sub$: any;
   public showBreadcrumbs = false;
+  public isAuth;
   constructor(
     private coursesService: CoursesService,
     private router: Router,
-    private authService: AuthService,
+    private store: Store<State>,
   ) {
+    store.select(state => state.auth).subscribe((res) =>  {
+      this.isAuth = res.user.isAuthentificated;
+    });
   }
 
   ngOnInit() {

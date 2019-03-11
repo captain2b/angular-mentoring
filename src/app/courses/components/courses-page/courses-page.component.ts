@@ -2,8 +2,11 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ICourseItem } from '../../models/course-item.model';
 import { CoursesService } from '../../../services/courses.service';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { State } from '../../../reducers/index';
+import { LoadCourses, RemoveCourse } from '../../../actions/courses.actions';
 
+const ITEMS_COUNT = 10;
 @Component({
   selector: 'app-courses-page',
   templateUrl: './courses-page.component.html',
@@ -11,37 +14,28 @@ import { Subscription } from 'rxjs';
 })
 export class CoursesPageComponent implements OnInit {
   courses: ICourseItem[] = [];
-  coursesCount = 10;
+  coursesCount = ITEMS_COUNT;
   searchText = '';
   canLoad = true;
 
-  constructor(private coursesService: CoursesService,
+  constructor(
+              private store: Store<State>,
               private router: Router) {
-  }
-
-  ngOnInit() {
-    this.coursesService.getList('0', this.coursesCount.toString()).subscribe((res: ICourseItem[]) => {
-      this.courses = res;
-      if (res.length < 10) {
+    store.select(state => state.courses).subscribe((res) => {
+      this.courses = res.courses;
+      if (this.courses.length && this.courses.length < this.coursesCount) {
         this.canLoad = false;
       }
     });
   }
 
+  ngOnInit() {
+    this.store.dispatch(new LoadCourses('0', this.coursesCount.toString(), ''));
+  }
+
   onSearch(searchText: string): void {
     this.searchText = searchText;
-    this.coursesService
-      .getList('0', '10', this.searchText)
-      .subscribe(
-        (res: ICourseItem[]) => {
-          this.courses = res;
-          this.coursesCount = 10;
-          if (res.length < 10) {
-            this.canLoad = false;
-          }
-        },
-        err => console.log(err.error),
-      );
+    this.store.dispatch(new LoadCourses('0',  this.coursesCount.toString(), this.searchText));
   }
 
   editCourse(id: number): void {
@@ -51,19 +45,8 @@ export class CoursesPageComponent implements OnInit {
   deleteCourse(id: string): void {
     const conf = window.confirm('Do you really want to delete this course?');
     if (conf) {
-      this.coursesService.removeCourse(id).subscribe(
-        () => {
-          this.coursesService
-            .getList('0', this.coursesCount.toString(), this.searchText)
-            .subscribe(
-              (res: ICourseItem[]) => {
-                this.courses = res;
-              },
-              err => console.log(err.error),
-            );
-        },
-        err => console.log(err),
-      );
+      this.store.dispatch(new RemoveCourse(id, '0', this.coursesCount.toString(), this.searchText));
+      this.store.dispatch(new LoadCourses('0', this.coursesCount.toString(), this.searchText));
     }
   }
 
@@ -72,23 +55,10 @@ export class CoursesPageComponent implements OnInit {
   }
 
   loadMore() {
-    if (this.canLoad) {
-      this.coursesService
-        .getList(
-          this.coursesCount.toString(),
-          '10',
-          this.searchText,
-        )
-        .subscribe(
-          (res: ICourseItem[]) => {
-            this.courses = [...this.courses, ...res];
-            this.coursesCount += 10;
-            if (res.length < 10) {
-              this.canLoad = false;
-            }
-          },
-          err => console.log(err.error),
-        );
-    }
+    this.coursesCount += ITEMS_COUNT;
+    this.store.dispatch(new LoadCourses(
+        '0',
+        this.coursesCount.toString(),
+        this.searchText));
   }
 }

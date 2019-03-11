@@ -5,6 +5,9 @@ import { ICourseItem } from '../../models/course-item.model';
 import * as moment from 'moment';
 import { UUID } from 'angular2-uuid';
 import { Subscription } from 'rxjs';
+import {AddCourse, EditCourse, LoadCourses} from '../../../actions/courses.actions';
+import { Store } from '@ngrx/store';
+import { State } from '../../../reducers';
 
 @Component({
   selector: 'app-edit-page',
@@ -22,6 +25,7 @@ export class EditCoursePageComponent implements OnInit, OnDestroy {
 
   constructor(private coursesService: CoursesService,
               private route: ActivatedRoute,
+              private store: Store<State>,
               private router: Router) {
   }
 
@@ -49,34 +53,24 @@ export class EditCoursePageComponent implements OnInit, OnDestroy {
   }
   onSave() {
     if (this.currentCourse) {
-      this.coursesService.updateCourse(
+      this.store.dispatch(new EditCourse(
         this.currentCourse.id,
         {
           ...this.currentCourse,
           name: this.name,
           length: this.length,
-          description: this.description})
-        .subscribe(
-          () => {
-            this.router.navigate(['./courses']);
-          },
-          err => console.log(err),
-      );
+          description: this.description}));
     } else {
-      this.coursesService.createCourse(UUID.UUID(),
-                                       this.name,
-                                       this.length,
-                                       this.description,
-      ).subscribe(
-        () => {
-          this.router.navigate(['./courses']);
-        },
-        err => console.log(err),
-        );
+      this.store.dispatch(new AddCourse(UUID.UUID(),
+                                        this.name,
+                                        this.length,
+                                        this.description,
+      ));
     }
   }
 
   onCancel() {
     this.router.navigate(['./courses']);
+
   }
 }

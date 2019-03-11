@@ -14,6 +14,13 @@ import { CanActivateGuard } from './guards/can-activate-guard';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth-interceptor';
 import { LoaderService } from './services/loader.service';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { reducers, metaReducers } from './reducers';
+import { EffectsModule } from '@ngrx/effects';
+import { AuthEffects } from './effects/auth.effects';
+import { environment } from '../environments/environment.prod';
+import {CoursesEffects} from "./effects/courses.effects";
 
 @NgModule({
   declarations: [
@@ -30,6 +37,11 @@ import { LoaderService } from './services/loader.service';
     AuthorizationModule,
     HttpClientModule,
     FormsModule,
+    StoreModule.forRoot(reducers, { metaReducers }),
+    !environment.production ? StoreDevtoolsModule.instrument() : [],
+    EffectsModule.forRoot([]),
+    EffectsModule.forFeature([AuthEffects]),
+    EffectsModule.forFeature([CoursesEffects]),
   ],
   exports: [
     SharedModule,

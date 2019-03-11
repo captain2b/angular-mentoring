@@ -1,6 +1,7 @@
-import { Component, EventEmitter, OnChanges, OnInit, Output } from '@angular/core';
-import { AuthService } from '../services/auth.service';
-import { Router } from '@angular/router';
+import { Component } from '@angular/core';
+import { State } from '../reducers';
+import { Store } from '@ngrx/store';
+import { Login } from '../actions/login.actions';
 
 @Component({
   selector: 'app-authorization',
@@ -12,19 +13,11 @@ export class AuthorizationComponent {
   password: string;
 
   constructor(
-    public authService: AuthService,
-    public router: Router,
+    private store: Store<State>,
   ) {
   }
   onClickLogin() {
-    this.authService.login(this.email, this.password).subscribe(
-      (res: {token: string}) => {
-        localStorage.setItem('token', res.token);
-        this.router.navigate(['courses']);
-      },
-      (err) => {
-        console.log(err.error);
-      });
+    this.store.dispatch(new Login(this.email, this.password));
   }
 
 }
