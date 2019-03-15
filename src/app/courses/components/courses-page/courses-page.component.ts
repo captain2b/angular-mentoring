@@ -1,6 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ICourseItem } from '../../models/course-item.model';
-import { CoursesService } from '../../../services/courses.service';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { State } from '../../../reducers/index';

@@ -4,6 +4,7 @@ import { SearchComponent } from './search/search.component';
 import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
 import { ButtonComponent } from './button/button.component';
 import { FormsModule } from '@angular/forms';
+import { DateControlComponent } from './date-control/date-control.component';
 
 @NgModule({
   imports: [
@@ -11,7 +12,7 @@ import { FormsModule } from '@angular/forms';
     FormsModule,
 
   ],
-  declarations: [SearchComponent, BreadcrumbsComponent, ButtonComponent],
+  declarations: [SearchComponent, BreadcrumbsComponent, ButtonComponent, DateControlComponent],
   exports: [SearchComponent, BreadcrumbsComponent, ButtonComponent],
 })
 export class SharedModule { }

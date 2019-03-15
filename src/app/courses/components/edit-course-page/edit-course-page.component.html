@@ -1,15 +1,17 @@
-<p>Title:</p>
-  <input type="text" id="name" [(ngModel)]="name" required>
+<form [formGroup]="groupControl" (ngSubmit)="onSave()">
+<p>Title:</p><p class="errorText" *ngIf="validationTitle()">error</p>
+  <input formControlName="nameControl" [class.error]="validationTitle()" type="text" id="name" required >
   <p>Description:</p>
-  <textarea rows="6" ngModel [(ngModel)]="description" required></textarea>
-    <p>Date:</p>
-  <input type="date" [disabled]="id" [(ngModel)]="date" required>
+  <textarea rows="6" formControlName="descriptionControl" required></textarea>
+  <app-date-control></app-date-control>
 <div class="duration">
   <p>Duration:</p>
-  <input type="number" [(ngModel)]="length" required>
+  <input type="number" formControlName="durationControl" required>
   <p *ngIf="length">{{length | durationPipe}}</p>
 </div>
 <div class="buttonContainer">
-  <app-button text="Save" (click)="onSave()"></app-button>
+  {{groupControl.status}}
+  <app-button type="submit" text="Save" [disabled]="!groupControl.valid"></app-button>
   <app-button text="Cancel" (click)="onCancel()"></app-button>
 </div>
+</form>

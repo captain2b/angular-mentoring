@@ -20,7 +20,7 @@ import { reducers, metaReducers } from './reducers';
 import { EffectsModule } from '@ngrx/effects';
 import { AuthEffects } from './effects/auth.effects';
 import { environment } from '../environments/environment.prod';
-import {CoursesEffects} from "./effects/courses.effects";
+import { CoursesEffects } from './effects/courses.effects';
 
 @NgModule({
   declarations: [
