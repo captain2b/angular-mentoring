@@ -61,10 +61,12 @@ export class EditCoursePageComponent implements OnInit, OnDestroy {
     const form = {
       name: this.groupControl.value.nameControl,
       length: this.groupControl.value.durationControl,
-      descrition: this.groupControl.value.descriptionControl,
+      description: this.groupControl.value.descriptionControl,
+      date: this.groupControl.value.dateControl,
     };
     console.log(this.groupControl);
     if (this.id) {
+      debugger
       this.store.dispatch(new EditCourse(
         this.id,
         {
@@ -72,7 +74,7 @@ export class EditCoursePageComponent implements OnInit, OnDestroy {
           ...form,
         }));
     } else {
-      this.store.dispatch(new AddCourse(UUID.UUID(), form.name, form.length, form.descrition));
+      this.store.dispatch(new AddCourse(UUID.UUID(), form.name, form.length, form.description));
     }
   }
 
@@ -81,7 +83,6 @@ export class EditCoursePageComponent implements OnInit, OnDestroy {
 
   }
   validationTitle() {
-    debugger
     return this.groupControl.controls['nameControl']
     && this.groupControl.controls['nameControl'].errors
     && this.groupControl.controls['nameControl'].touched

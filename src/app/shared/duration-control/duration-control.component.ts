@@ -2,18 +2,18 @@ import { Component, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
-  selector: 'app-date-control',
-  templateUrl: './date-control.component.html',
-  styleUrls: ['./date-control.component.less'],
+  selector: 'app-duration-control',
+  templateUrl: './duration-control.component.html',
+  styleUrls: ['./duration-control.component.less'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => DateControlComponent),
+      useExisting: forwardRef(() => DurationControlComponent),
       multi: true,
     },
   ],
 })
-export class DateControlComponent implements ControlValueAccessor {
+export class DurationControlComponent implements ControlValueAccessor {
 
   private innerValue: string;
   onChange: Function;
