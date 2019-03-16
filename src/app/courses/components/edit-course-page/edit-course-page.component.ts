@@ -18,12 +18,14 @@ import { AddCourse, EditCourse } from '../../../actions/courses.actions';
 export class EditCoursePageComponent implements OnInit, OnDestroy {
   public id: string;
   private sub$: Subscription;
+  private maxTitle = 50;
+  private maxDescription = 500;
   groupControl: FormGroup;
   defaultForm = {
-    nameControl: ['', Validators.maxLength(50)],
-    descriptionControl: ['', Validators.maxLength(500)],
-    dateControl: [[]],
-    durationControl: [[]],
+    nameControl: ['', Validators.maxLength(this.maxTitle)],
+    descriptionControl: ['', Validators.maxLength(this.maxDescription)],
+    dateControl: [''],
+    durationControl: ['', Validators.required],
     authorsControl: [[]],
   };
 
@@ -87,5 +89,11 @@ export class EditCoursePageComponent implements OnInit, OnDestroy {
     && this.groupControl.controls['nameControl'].errors
     && this.groupControl.controls['nameControl'].touched
     && this.groupControl.controls['nameControl'].errors['maxlength'];
+  }
+  validationDescription() {
+    return this.groupControl.controls['descriptionControl']
+    && this.groupControl.controls['descriptionControl'].errors
+    && this.groupControl.controls['descriptionControl'].touched
+    && this.groupControl.controls['descriptionControl'].errors['maxlength'];
   }
 }

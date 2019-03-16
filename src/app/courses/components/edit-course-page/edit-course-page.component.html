@@ -1,8 +1,8 @@
 <form [formGroup]="groupControl" (ngSubmit)="onSave()">
-<p>Title:</p><p class="errorText" *ngIf="validationTitle()">error</p>
+<p>Title:</p><p class="errorText" *ngIf="validationTitle()">Max length: {{maxTitle}}</p>
   <input formControlName="nameControl" [class.error]="validationTitle()" type="text" id="name" required >
-  <p>Description:</p>
-  <textarea rows="6" formControlName="descriptionControl" required></textarea>
+  <p>Description:</p><p class="errorText" *ngIf="validationDescription()">Max length: {{maxDescription}}</p>
+  <textarea rows="6" formControlName="descriptionControl" [class.error]="validationTitle()" required></textarea>
   <app-date-control *ngIf="id" formControlName="dateControl"></app-date-control>
   <app-duration-control formControlName="durationControl"></app-duration-control>
 <div class="buttonContainer">
