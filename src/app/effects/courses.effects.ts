@@ -45,7 +45,7 @@ export class CoursesEffects {
   addCourse$: Observable<any> = this.actions$.pipe(
     ofType(CoursesActionTypes.AddCourse),
     mergeMap((action: AddCourse) =>
-      this.coursesService.createCourse(action.id, action.name, action.length, action.description)),
+      this.coursesService.createCourse(action.id, action.name, action.authors, action.length, action.description)),
     map((res) => {
       this.router.navigate(['./courses']);
       return new AddCourseSuccess();

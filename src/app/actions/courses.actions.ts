@@ -43,7 +43,7 @@ export class RemoveCourseSuccess implements Action {
 }
 export class AddCourse implements Action {
   readonly type = CoursesActionTypes.AddCourse;
-  constructor(public id, public  name, public length, public description) {}
+  constructor(public id, public  name, public length, public description, public authors) {}
 
 }
 export class AddCourseError implements Action {

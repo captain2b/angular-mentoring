@@ -4,11 +4,11 @@
 <form [formGroup]="loginControl">
   <div>
     <p>Email. *Required</p>
-    <input type="text" formControlName="email">
+    <input type="text" formControlName="email" required="">
   </div>
   <div>
     <p>Password. *Required</p>
-    <input type="text" formControlName="password">
+    <input type="text" formControlName="password" required="">
   </div>
 </form>
-<app-button text="LogIn" (click)="onClickLogin()"></app-button>
+<app-button text="LogIn" (click)="onClickLogin()" [disabled]="!loginControl.valid"></app-button>

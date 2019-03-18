@@ -20,13 +20,14 @@ export class EditCoursePageComponent implements OnInit, OnDestroy {
   private sub$: Subscription;
   private maxTitle = 50;
   private maxDescription = 500;
+  private authors: any;
   groupControl: FormGroup;
   defaultForm = {
     nameControl: ['', Validators.maxLength(this.maxTitle)],
     descriptionControl: ['', Validators.maxLength(this.maxDescription)],
     dateControl: [''],
     durationControl: ['', Validators.required],
-    authorsControl: [[]],
+    authorsControl: [null],
   };
 
   constructor(private coursesService: CoursesService,
@@ -39,6 +40,14 @@ export class EditCoursePageComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.groupControl = this.fb.group(this.defaultForm);
+    this.coursesService.getAuthors().subscribe(
+      (res) => {
+        this.authors = res;
+      },
+      err => {
+        console.log(err);
+      },
+    );
     this.sub$ = this.route.params.subscribe((params) => {
       this.id = params.id;
       this.id && this.coursesService.getItemById(this.id).subscribe((res: ICourseItem) => {
@@ -46,6 +55,7 @@ export class EditCoursePageComponent implements OnInit, OnDestroy {
           this.groupControl.controls['nameControl'].setValue(res.name);
           this.groupControl.controls['descriptionControl'].setValue(res.description);
           this.groupControl.controls['durationControl'].setValue(res.length);
+          this.groupControl.controls['authorsControl'].setValue(res.authors);
           this.groupControl.controls['dateControl'].setValue(moment(res.date).format('YYYY-MM-DD'));
         }
       },
@@ -65,10 +75,9 @@ export class EditCoursePageComponent implements OnInit, OnDestroy {
       length: this.groupControl.value.durationControl,
       description: this.groupControl.value.descriptionControl,
       date: this.groupControl.value.dateControl,
+      authors: this.groupControl.value.authorsControl,
     };
-    console.log(this.groupControl);
     if (this.id) {
-      debugger
       this.store.dispatch(new EditCourse(
         this.id,
         {
@@ -76,7 +85,7 @@ export class EditCoursePageComponent implements OnInit, OnDestroy {
           ...form,
         }));
     } else {
-      this.store.dispatch(new AddCourse(UUID.UUID(), form.name, form.length, form.description));
+      this.store.dispatch(new AddCourse(UUID.UUID(), form.name, form.length, form.description, form.authors));
     }
   }
 
