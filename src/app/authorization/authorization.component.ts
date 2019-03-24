@@ -26,4 +26,13 @@ export class AuthorizationComponent implements OnInit{
     this.store.dispatch(new Login(this.loginControl.value.email,  this.loginControl.value.password));
   }
 
+  validation() {
+    return this.loginControl.controls['email']
+      && this.loginControl.controls['email'].errors
+      && this.loginControl.controls['email'].touched
+      || this.loginControl.controls['password']
+      && this.loginControl.controls['password'].errors
+      && this.loginControl.controls['password'].touched
+      ;
+  }
 }

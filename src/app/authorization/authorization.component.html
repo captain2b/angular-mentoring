@@ -2,6 +2,7 @@
   Login
 </div>
 <form [formGroup]="loginControl">
+  <p class="errorText" *ngIf="validation()">All fields are required!</p>
   <div>
     <p>Email. *Required</p>
     <input type="text" formControlName="email" required="">

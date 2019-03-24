@@ -9,6 +9,7 @@ import { Store } from '@ngrx/store';
 import { State } from '../../../reducers';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { AddCourse, EditCourse } from '../../../actions/courses.actions';
+import {AuthorsModel} from "../../models/authors.model";
 
 @Component({
   selector: 'app-edit-page',
@@ -18,9 +19,9 @@ import { AddCourse, EditCourse } from '../../../actions/courses.actions';
 export class EditCoursePageComponent implements OnInit, OnDestroy {
   public id: string;
   private sub$: Subscription;
-  private maxTitle = 50;
-  private maxDescription = 500;
-  private authors: any;
+  public maxTitle = 50;
+  public maxDescription = 500;
+  public authors: AuthorsModel[];
   groupControl: FormGroup;
   defaultForm = {
     nameControl: ['', Validators.maxLength(this.maxTitle)],
