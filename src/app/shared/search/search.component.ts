@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import {FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-search',
@@ -8,7 +9,7 @@ import { debounceTime } from 'rxjs/operators';
   styleUrls: ['./search.component.less'],
 })
 export class SearchComponent implements OnInit {
-  searchText: string;
+  public searchTextControl: FormControl = new FormControl('');
   searchSubject$ = new Subject<string>();
   @Output() searchEvent: any = new EventEmitter<any>();
 
@@ -30,6 +31,6 @@ export class SearchComponent implements OnInit {
   }
 
   onSearch(): void {
-    this.searchSubject$.next(this.searchText);
+    this.searchSubject$.next(this.searchTextControl.value);
   }
 }

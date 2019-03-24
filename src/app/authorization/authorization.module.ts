@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../shared/shared.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AuthorizationComponent } from './authorization.component';
-import {FormsModule} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
@@ -11,7 +11,7 @@ import {FormsModule} from '@angular/forms';
     SharedModule,
     FontAwesomeModule,
     FormsModule,
-
+    ReactiveFormsModule,
   ],
   declarations: [
     AuthorizationComponent,

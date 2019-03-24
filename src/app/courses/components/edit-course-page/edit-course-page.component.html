@@ -1,15 +1,13 @@
-<p>Title:</p>
-  <input type="text" id="name" [(ngModel)]="name" required>
-  <p>Description:</p>
-  <textarea rows="6" ngModel [(ngModel)]="description" required></textarea>
-    <p>Date:</p>
-  <input type="date" [disabled]="id" [(ngModel)]="date" required>
-<div class="duration">
-  <p>Duration:</p>
-  <input type="number" [(ngModel)]="length" required>
-  <p *ngIf="length">{{length | durationPipe}}</p>
-</div>
+<form [formGroup]="groupControl" (ngSubmit)="onSave()">
+<p>Title:</p><p class="errorText" *ngIf="validationTitle()">Max length: {{maxTitle}}</p>
+  <input formControlName="nameControl" [class.error]="validationTitle()" type="text" id="name" required >
+  <p>Description:</p><p class="errorText" *ngIf="validationDescription()">Max length: {{maxDescription}}</p>
+  <textarea rows="6" formControlName="descriptionControl" [class.error]="validationTitle()" required></textarea>
+  <app-date-control *ngIf="id" formControlName="dateControl"></app-date-control>
+  <app-duration-control formControlName="durationControl"></app-duration-control>
+  <app-authors-control [listOfAuthors]="authors" formControlName="authorsControl"></app-authors-control>
 <div class="buttonContainer">
-  <app-button text="Save" (click)="onSave()"></app-button>
+  <app-button type="submit" text="Save" [disabled]="!groupControl.valid"></app-button>
   <app-button text="Cancel" (click)="onCancel()"></app-button>
 </div>
+</form>

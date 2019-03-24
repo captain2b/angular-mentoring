@@ -15,3 +15,15 @@
     cursor: pointer;
   }
 }
+.disabled{
+  background-color: @border-color;
+  border: 1px solid @border-color;
+  color: white;
+  opacity: 0.5;
+
+  &:hover {
+    cursor: not-allowed;
+    background-color: @border-color;
+    color: white;
+  }
+  }

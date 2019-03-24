@@ -5,9 +5,11 @@ import { ICourseItem } from '../../models/course-item.model';
 import * as moment from 'moment';
 import { UUID } from 'angular2-uuid';
 import { Subscription } from 'rxjs';
-import {AddCourse, EditCourse, LoadCourses} from '../../../actions/courses.actions';
 import { Store } from '@ngrx/store';
 import { State } from '../../../reducers';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { AddCourse, EditCourse } from '../../../actions/courses.actions';
+import {AuthorsModel} from "../../models/authors.model";
 
 @Component({
   selector: 'app-edit-page',
@@ -16,29 +18,46 @@ import { State } from '../../../reducers';
 })
 export class EditCoursePageComponent implements OnInit, OnDestroy {
   public id: string;
-  public name: string;
-  public description: string;
-  public date: any;
-  public length: number;
-  public currentCourse: ICourseItem;
   private sub$: Subscription;
+  public maxTitle = 50;
+  public maxDescription = 500;
+  public authors: AuthorsModel[];
+  groupControl: FormGroup;
+  defaultForm = {
+    nameControl: ['', Validators.maxLength(this.maxTitle)],
+    descriptionControl: ['', Validators.maxLength(this.maxDescription)],
+    dateControl: [''],
+    durationControl: ['', Validators.required],
+    authorsControl: [null],
+  };
 
   constructor(private coursesService: CoursesService,
               private route: ActivatedRoute,
               private store: Store<State>,
-              private router: Router) {
+              private router: Router,
+              private fb: FormBuilder,
+              ) {
   }
 
   ngOnInit() {
+    this.groupControl = this.fb.group(this.defaultForm);
+    this.coursesService.getAuthors().subscribe(
+      (res) => {
+        this.authors = res;
+      },
+      err => {
+        console.log(err);
+      },
+    );
     this.sub$ = this.route.params.subscribe((params) => {
       this.id = params.id;
       this.id && this.coursesService.getItemById(this.id).subscribe((res: ICourseItem) => {
-        this.currentCourse = res;
-        if (this.currentCourse) {
-          this.name = this.currentCourse.name;
-          this.description = this.currentCourse.description;
-          this.date = moment(this.currentCourse.date).format('YYYY-MM-DD');
-          this.length = this.currentCourse.length;
+        if (res) {
+          this.groupControl.controls['nameControl'].setValue(res.name);
+          this.groupControl.controls['descriptionControl'].setValue(res.description);
+          this.groupControl.controls['durationControl'].setValue(res.length);
+          this.groupControl.controls['authorsControl'].setValue(res.authors);
+          this.groupControl.controls['dateControl'].setValue(moment(res.date).format('YYYY-MM-DD'));
         }
       },
                                                                     (err) => {
@@ -52,25 +71,39 @@ export class EditCoursePageComponent implements OnInit, OnDestroy {
     if (this.sub$) { this.sub$.unsubscribe(); }
   }
   onSave() {
-    if (this.currentCourse) {
+    const form = {
+      name: this.groupControl.value.nameControl,
+      length: this.groupControl.value.durationControl,
+      description: this.groupControl.value.descriptionControl,
+      date: this.groupControl.value.dateControl,
+      authors: this.groupControl.value.authorsControl,
+    };
+    if (this.id) {
       this.store.dispatch(new EditCourse(
-        this.currentCourse.id,
+        this.id,
         {
-          ...this.currentCourse,
-          name: this.name,
-          length: this.length,
-          description: this.description}));
+          id: this.id,
+          ...form,
+        }));
     } else {
-      this.store.dispatch(new AddCourse(UUID.UUID(),
-                                        this.name,
-                                        this.length,
-                                        this.description,
-      ));
+      this.store.dispatch(new AddCourse(UUID.UUID(), form.name, form.length, form.description, form.authors));
     }
   }
 
   onCancel() {
     this.router.navigate(['./courses']);
 
+  }
+  validationTitle() {
+    return this.groupControl.controls['nameControl']
+    && this.groupControl.controls['nameControl'].errors
+    && this.groupControl.controls['nameControl'].touched
+    && this.groupControl.controls['nameControl'].errors['maxlength'];
+  }
+  validationDescription() {
+    return this.groupControl.controls['descriptionControl']
+    && this.groupControl.controls['descriptionControl'].errors
+    && this.groupControl.controls['descriptionControl'].touched
+    && this.groupControl.controls['descriptionControl'].errors['maxlength'];
   }
 }

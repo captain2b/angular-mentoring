@@ -1,1 +1,3 @@
-<input placeholder="Text to search" [(ngModel)]="searchText" (keyup)="onSearch()" />
+<input placeholder="Text to search"
+       [formControl]="searchTextControl"
+       (keyup)="onSearch()" />

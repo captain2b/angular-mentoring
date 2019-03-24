@@ -1,0 +1,36 @@
+  <p> Authors:</p>
+  <span class="error" *ngIf="!isValid && isTouched">
+      You need to choose at least one author
+  </span>
+  <section
+    (click)="focusOnInput()"
+    [ngClass]="{
+      menuOpened: filteredListOfAuthors.length,
+      error: !isValid && isTouched
+    }"
+  >
+    <div
+      *ngFor="let selectedAuthor of selectedAuthors; let idx = index"
+      [ngClass]="['selectedAuthor', 'selectedAuthor-' + idx]"
+      tabindex="-1"
+      (keydown)="controlSelectedAuthors($event, selectedAuthor)"
+    >
+      <span>{{ selectedAuthor.name }}</span>
+      <app-button (click)="deleteAuthor(selectedAuthor)" text="x"></app-button>
+    </div>
+    <input
+      [(ngModel)]="value"
+      #input
+      (blur)="onBlur()"
+      (keydown)="backspaceOnInput($event)"
+    />
+  </section>
+
+  <ul *ngIf="filteredListOfAuthors.length">
+    <li
+      *ngFor="let author of filteredListOfAuthors"
+      (click)="selectAuthor(author)"
+    >
+      {{ author.name }}
+    </li>
+  </ul>

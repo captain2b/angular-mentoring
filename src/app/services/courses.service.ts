@@ -3,6 +3,7 @@ import { ICourseItem } from '../courses/models/course-item.model';
 import { HttpClient } from '@angular/common/http';
 import { finalize } from 'rxjs/operators';
 import { LoaderService } from './loader.service';
+import {AuthorsModel} from "../courses/models/authors.model";
 
 @Injectable({
   providedIn: 'root',
@@ -21,19 +22,26 @@ export class CoursesService {
       .pipe(finalize(() => this.loaderService.hide()));
   }
 
+  getAuthors() {
+    this.loaderService.show();
+    return this.http.get<AuthorsModel[]>('http://localhost:3004/authors')
+      .pipe(finalize(() => this.loaderService.hide()));
+  }
+
   getItemById(id: string) {
     this.loaderService.show();
     return this.http.get(`http://localhost:3004/courses/${id}`)
       .pipe(finalize(() => this.loaderService.hide()));
   }
 
-  createCourse(id: string, name: string, length?: number, description?: string, topRated?: boolean) {
+  createCourse(id: string, name: string, authors: any, length?: number, description?: string, topRated?: boolean) {
     this.loaderService.show();
     return this.http.post('http://localhost:3004/courses', {
       id,
       name,
       length,
       description,
+      authors,
       isTopRated: topRated || false,
       date: new Date(Date.now()),
     },
